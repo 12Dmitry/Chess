@@ -15,6 +15,8 @@ namespace Chess
         {
             Chessman chessman = DeterminateChessman(initial); //TODO: Figure figure = GetFigure(x1, y1); // получаем фигуру по координатам
             //bool valid = figure.CheckMove(x1, y1, x2, y2); // проверяем ход для этой фигуры
+            if (chessman == Chessman.Nun)
+                throw new ArgumentException("No chessman in this coordinate");
 
 
         }
@@ -23,7 +25,7 @@ namespace Chess
         {
             int chessman = (int)ClassBoard.Board[coordinate.GetX, coordinate.GetY];
             if (chessman < 1 || chessman > 8)
-                throw new ArgumentException("No chessman in this coordinate");
+                return Chessman.Nun;
             return (Chessman)chessman;
         }
         
