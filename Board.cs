@@ -28,7 +28,7 @@ namespace Chess
             for (int i = 7; i >= 0; i--)
             {
                 for (int j = 0; j < 8; j++)
-                    Console.Write(Board[j, i] + "\t");
+                    Console.Write(Board[j, i] + "\t"); //TODO: у меня доска перевернута, такчто скорее всего логику, где x y нужно будет писать учитывая это
                 Console.WriteLine();
             }
         }

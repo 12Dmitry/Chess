@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 namespace Chess
 {
     public class MoveLogic
+    //TODO: у меня доска перевернута, такчто скорее всего логику, где x y нужно будет писать учитывая это
     {
         //TODO: проверить что в initial, проверить как это может дваигаться на board,
         //проверить можно ли это поставить в final
         public void MakeMoveLogic(Point initial, Point final)
         {
-            Chessman chessman = DeterminateChessman(initial);
+            Chessman chessman = DeterminateChessman(initial); //TODO: Figure figure = GetFigure(x1, y1); // получаем фигуру по координатам
+            //bool valid = figure.CheckMove(x1, y1, x2, y2); // проверяем ход для этой фигуры
 
 
         }
@@ -24,47 +26,8 @@ namespace Chess
                 throw new ArgumentException("No chessman in this coordinate");
             return (Chessman)chessman;
         }
-        public bool PownCheckMuve(Point initial, Point final)
         
 
-        public bool HorseCheckMoov(Point initial, Point final)
-        {
-            if ((Math.Abs(initial.GetX - final.GetX) == 1 && Math.Abs(initial.GetY - final.GetY) == 2) 
-            || (Math.Abs(initial.GetX - final.GetX) == 2 && Math.Abs(initial.GetY - final.GetY) == 1))
-                return true;
-            else return false;
-        }
-
-        public bool BishopCheckMoov(Point initial, Point final)
-        {
-            if (Math.Abs(initial.GetX - final.GetX) == Math.Abs(initial.GetY - final.GetY))
-                return true;
-            else return false;
-        }
-
-        public bool RookCheckMoov(Point initial, Point final)
-        {
-            if (initial.GetX == final.GetX || initial.GetY == final.GetY)
-                return true;
-            else return false;
-        }
-
-        public bool QueenCheckMoove(Point initial, Point final)
-        {
-            if (initial.GetX == final.GetX || initial.GetY == final.GetY 
-                || Math.Abs(initial.GetX - final.GetX) == Math.Abs(initial.GetY - final.GetY))
-                return true;
-            else return false;
-        }
-
-        public bool KingCheckMoove(Point initial, Point final)
-        {
-            if ((initial.GetX == final.GetX || initial.GetY == final.GetY 
-                || Math.Abs(initial.GetX - final.GetX) == Math.Abs(initial.GetY - final.GetY))
-                && (initial.GetX + 1 == final.GetX || initial.GetY + 1 == final.GetY))
-                return true;
-            else return false;
-        }
 
     }
 }

@@ -20,9 +20,63 @@ namespace Chess
     {
         public override bool CheckMove(Point initial, Point final)
         {
-            if (initial.GetX == final.GetX && initial.GetY + 1 == final.GetY)
-                return true;
-            else return false;
+            if (initial.GetX != final.GetX || initial.GetY + 1 != final.GetY)
+                return false;
+            else return true;
+        }
+    }
+
+    public class Horse : ClassChessman
+    {
+        public override bool CheckMove(Point initial, Point final)
+        {
+            if ((Math.Abs(initial.GetX - final.GetX) != 1 || Math.Abs(initial.GetY - final.GetY) != 2)
+            && (Math.Abs(initial.GetX - final.GetX) != 2 || Math.Abs(initial.GetY - final.GetY) != 1))
+                return false;
+            else return true;
+        }
+    }
+
+    public class Bishop : ClassChessman
+    {
+        public override bool CheckMove(Point initial, Point final)
+        {
+            if (Math.Abs(initial.GetX - final.GetX) != Math.Abs(initial.GetY - final.GetY))
+                return false;
+            else return true;
+        }
+    }
+
+    public class Rook : ClassChessman
+    {
+        public override bool CheckMove(Point initial, Point final)
+        {
+            if (initial.GetX != final.GetX && initial.GetY != final.GetY)
+                return false;
+            else return true;
+        }
+    }
+
+    public class Queen : ClassChessman
+    {
+        public override bool CheckMove(Point initial, Point final)
+        {
+            if (initial.GetX != final.GetX && initial.GetY != final.GetY
+                && Math.Abs(initial.GetX - final.GetX) != Math.Abs(initial.GetY - final.GetY))
+                return false;
+            else return true;
+        }
+    }
+
+    public class King : ClassChessman
+    {
+        public override bool CheckMove(Point initial, Point final)
+        {
+            if (Math.Abs(final.GetX - initial.GetX) > 1 || Math.Abs(final.GetY - initial.GetY) > 1)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
