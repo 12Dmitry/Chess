@@ -8,13 +8,18 @@ namespace Chess
 {
     public class ClassBoard
     {
-        private Chessman Figure { get; set; }
+        private Chessman Chessman { get; set; }
         private bool IsWhite { get; set; }
 
         public ClassBoard(Chessman chessman, bool white)
         {
-            Figure = chessman;
+            Chessman = chessman;
             IsWhite = white;
+        }
+
+        public Chessman GetChessman()
+        {
+            return Chessman;
         }
 
         public static ClassBoard[,] Board = new ClassBoard[8, 8];
@@ -22,22 +27,30 @@ namespace Chess
         {
             for (int i = 0; i < 8; i++)
                 for (int j = 0; j < 8; j++)
-                    Board[i, j].IsWhite = Convert.ToBoolean((i + j) % 2);
+                    Board[i, j] = new ClassBoard(new Nun(), Convert.ToBoolean((i + j) % 2));
         }
+
+        public static void AddToBoard(Point initial, Point final)
+        {
+            Board[initial.GetX - 1, initial.GetY - 1].Chessman = Board[final.GetX - 1, final.GetY - 1].Chessman;
+            Board[initial.GetX - 1, initial.GetY - 1].Chessman = null;
+        }
+
 
         public static void AddToBoard(Point position, Chessman chessman)
         {
-            Board[position.GetX -1, position.GetY -1].Figure = chessman;
+            Board[position.GetX -1, position.GetY -1].Chessman = chessman;
             PrintBoard();
         }
 
-        public static void PrintBoard()
+        public static void PrintBoard() // переделать в stringbulder!!!
         {
             Console.Clear(); // TODO: переместить это в отдельный метод
             for (int i = 7; i >= 0; i--)
             {
                 for (int j = 0; j < 8; j++)
-                    Console.Write((string)(Board[j, i].Figure.Name + "\t")); //TODO: у меня доска перевернута, такчто скорее всего логику, где x y нужно будет писать учитывая это
+                    Console.Write((int)(Board[j, i].Chessman.Name) + "\t"); //TODO: у меня доска перевернута, такчто скорее всего логику, где x y нужно будет писать учитывая это хотя хз
+                Console.WriteLine();
                 Console.WriteLine();
             }
         }

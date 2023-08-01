@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Chess
 {
-    public enum ChessmanName { Nun = 0, Pawn = 1, Horse = 3, Bishop = 3, Rook = 5, Queen = 9, King = 7 }; //TODO: на юлеарн показывали как и где его ставить.
+    public enum ChessmanName { Nun = 0, Pawn = 1, Horse = 3, Bishop = 3, Rook = 5, Queen = 9, King = 111 }; //TODO: на юлеарн показывали как и где его ставить.
 
     public abstract class Chessman
     {
@@ -24,6 +24,22 @@ namespace Chess
         }
 
         public abstract bool VerifyMove(Point initial, Point final);
+
+        // Переопределение метода ToString
+        /*public override string ToString()
+        {
+            return $"Chessman: Name = {Name}, IsWhite = {IsWhite}, Valid = {Valid}";
+        }*/
+    }
+
+    public class Nun : Chessman
+    {
+        public Nun() : base(ChessmanName.Nun, false) { }
+
+        public override bool VerifyMove(Point initial, Point final)
+        {
+            return false;
+        }
     }
 
     public class Pawn : Chessman
@@ -36,7 +52,8 @@ namespace Chess
 
         public override bool VerifyMove(Point initial, Point final)
         {
-            if (initial.GetX == final.GetX || initial.GetY + 1 == final.GetY || (initial.GetY + 2 == final.GetY && HasMove)) ;
+            if (initial.GetX == final.GetX && (initial.GetY + 1 == final.GetY ||
+               (initial.GetY + 2 == final.GetY && HasMove)) || (Math.Abs(initial.GetX - final.GetX) == 1 && final.GetY - initial.GetY == 1)) ;
             else
                 Valid = false;
             if (Valid)

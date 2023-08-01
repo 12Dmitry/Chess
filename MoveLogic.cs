@@ -11,25 +11,27 @@ namespace Chess
     {
         //TODO: проверить что в initial, проверить как это может дваигаться на board,
         //проверить можно ли это поставить в final
-        public void MakeMoveLogic(Point initial, Point final)
+        public static bool MakeMoveLogic(Point initial, Point final)
         {
-            ChessmanName chessman = DeterminateChessman(initial); //TODO: Chessman figure = GetFigure(x1, y1); // получаем фигуру по координатам
+            Chessman chessman = DeterminateChessman(initial); //TODO: Chessman figure = GetFigure(x1, y1); // получаем фигуру по координатам
             //bool valid = figure.VerifyMove(x1, y1, x2, y2); // проверяем ход для этой фигуры
-            if (chessman == ChessmanName.Nun)
+            if (chessman.Name == ChessmanName.Nun)
                 throw new ArgumentException("No chessman in this coordinate");
-
-
+            if (!chessman.VerifyMove(initial, final) || !Cut(chessman, DeterminateChessman(final)))
+                throw new ArgumentException("Impossible move");
+            return true;
         }
 
-        public ChessmanName DeterminateChessman(Point coordinate)
+        public static Chessman DeterminateChessman(Point coordinate)
         {
-            int chessman = (int)ClassBoard.Board[coordinate.GetX, coordinate.GetY];
-            if (chessman < 1 || chessman > 8)
-                return ChessmanName.Nun;
-            return (ChessmanName)chessman;
+            return ClassBoard.Board[coordinate.GetX, coordinate.GetY].GetChessman();
         }
-        
 
-
+        private static bool Cut(Chessman initial, Chessman final)
+        {
+            if (final.Name != ChessmanName.Nun || final.IsWhite != initial.IsWhite)
+                return true;
+            return false;
+        }
     }
 }
