@@ -53,7 +53,7 @@ namespace Chess
         public override bool VerifyMove(Point initial, Point final)
         {
             if (initial.GetX == final.GetX && (initial.GetY + 1 == final.GetY ||
-               (initial.GetY + 2 == final.GetY && HasMove)) || (Math.Abs(initial.GetX - final.GetX) == 1 && final.GetY - initial.GetY == 1)) ;
+               (initial.GetY + 2 == final.GetY && HasMove))) ;
             else
                 Valid = false;
             if (Valid)
@@ -99,7 +99,8 @@ namespace Chess
         }
         public override bool VerifyMove(Point initial, Point final)
         {
-            if (initial.GetX != final.GetX || initial.GetY != final.GetY)
+            if (initial.GetX != final.GetX || initial.GetY != final.GetY);
+            else
                 Valid = false;
             if (Valid)
                 HasMove = true;

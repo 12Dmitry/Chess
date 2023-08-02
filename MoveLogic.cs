@@ -17,14 +17,14 @@ namespace Chess
             //bool valid = figure.VerifyMove(x1, y1, x2, y2); // проверяем ход для этой фигуры
             if (chessman.Name == ChessmanName.Nun)
                 throw new ArgumentException("No chessman in this coordinate");
-            if (!chessman.VerifyMove(initial, final) || !Cut(chessman, DeterminateChessman(final)))
+            if (!chessman.VerifyMove(initial, final) && !Cut(chessman, DeterminateChessman(final)))
                 throw new ArgumentException("Impossible move");
             return true;
         }
 
         public static Chessman DeterminateChessman(Point coordinate)
         {
-            return ClassBoard.Board[coordinate.GetX, coordinate.GetY].GetChessman();
+            return ClassBoard.Board[coordinate.GetX -1, coordinate.GetY -1].GetChessman; //TODO: обработать искл System.IndexOutOfRangeException:  
         }
 
         private static bool Cut(Chessman initial, Chessman final)

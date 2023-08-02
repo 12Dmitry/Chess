@@ -17,12 +17,12 @@ namespace Chess
             IsWhite = white;
         }
 
-        public Chessman GetChessman()
+        public Chessman GetChessman
         {
-            return Chessman;
+            get { return Chessman; }
         }
 
-        public static ClassBoard[,] Board = new ClassBoard[8, 8];
+        public static ClassBoard[,] Board = new ClassBoard[8, 8]; // HACK : !!! координаты смещены на -1 !!! и в коде это выглядит ужасно, как ДОПОЛНИТЕЛЬНАЯ ИНСТРУКЦИЯ ИЗВНЕ!!
         public static void MakeBoard()
         {
             for (int i = 0; i < 8; i++)
@@ -32,8 +32,9 @@ namespace Chess
 
         public static void AddToBoard(Point initial, Point final)
         {
-            Board[initial.GetX - 1, initial.GetY - 1].Chessman = Board[final.GetX - 1, final.GetY - 1].Chessman;
-            Board[initial.GetX - 1, initial.GetY - 1].Chessman = null;
+            Board[final.GetX - 1, final.GetY - 1].Chessman = Board[initial.GetX - 1, initial.GetY - 1].Chessman;
+            Board[initial.GetX - 1, initial.GetY - 1].Chessman = new Nun();
+            PrintBoard();
         }
 
 
