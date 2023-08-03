@@ -28,7 +28,7 @@ namespace Chess
             Console.WriteLine("Second coordinates: ");
             Point final = ArringeCoordinates(Console.ReadLine());
             if (MoveLogic.MakeMoveLogic(initial, final))
-                ClassBoard.AddToBoard(initial, final);
+                ClassBoard.AddMoveToBoard(initial, final);
             else
             {
                 Console.WriteLine("Wrong move");

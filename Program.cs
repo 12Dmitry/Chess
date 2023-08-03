@@ -3,9 +3,9 @@
 ClassBoard.MakeBoard();
 ClassBoard.PrintBoard();
 
-ListChessman white = new ListChessman();
-white.AddChessman(new Pawn(true, new Point(1, 2)));
-white.AddChessman(new Rook(true, new Point(8, 1)));
+
+ListChessmen.AddChessman(new Pawn(true, new Point(1, 2)));
+ListChessmen.AddChessman(new Rook(true, new Point(8, 1)));
 
 
 while (true)

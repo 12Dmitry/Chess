@@ -24,8 +24,8 @@ namespace Chess
             if (chessman.Name == ChessmanName.Nun)
                 throw new ArgumentException("No chessman in this coordinate");
             if (!chessman.VerifyMove(initial, final) && !Cut(chessman, DeterminateChessman(final)))
-                throw new ArgumentException("Impossible move");
-            if (IsCheck(final))
+                throw new ArgumentException("Impossible move"); // it is't argument exep
+            if (chessman.Bighop)
             return true;
         }
 
@@ -34,11 +34,28 @@ namespace Chess
             return ClassBoard.Board[coordinate.GetX -1, coordinate.GetY -1].GetChessman; //TODO: обработать искл System.IndexOutOfRangeException:  
         }
 
-        public static void BecomesAnotherChessman()
+        public bool DeclareCheck(Chessman chessman, Point final) 
         {
-            
+            if (chessman.VerifyMove(final, ListChessmen.FindChessmanToName(ChessmanName.King, !chessman.IsWhite).Position))
+                return true;
+            return false;
         }
-        // public bool IsCheck(Point final) {}
+
+
+        protected bool IsDiagonalMove(int sourceColumn, int sourceRow, int destColumn, int destRow)
+        {
+            return Math.Abs(destColumn - sourceColumn) == Math.Abs(destRow - sourceRow);
+        }
+
+        protected bool IsVerticalMove(int sourceColumn, int sourceRow, int destColumn, int destRow)
+        {
+            return sourceColumn == destColumn && sourceRow != destRow;
+        }
+
+        protected bool IsHorizontalMove(int sourceColumn, int sourceRow, int destColumn, int destRow)
+        {
+            return sourceRow == destRow && sourceColumn != destColumn;
+        }
 
     }
 }

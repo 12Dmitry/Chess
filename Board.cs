@@ -31,11 +31,12 @@ namespace Chess
                     Board[i, j] = new ClassBoard(new Nun(new Point (i+1, j+1)), Convert.ToBoolean((i + j) % 2));
         }
 
-        public static void AddToBoard(Point initial, Point final)
+        public static void AddMoveToBoard(Point initial, Point final)
         {
             Board[final.GetX - 1, final.GetY - 1].Chessman = Board[initial.GetX - 1, initial.GetY - 1].Chessman;
             Board[initial.GetX - 1, initial.GetY - 1].Chessman = new Nun(initial);
 
+            ListChessmen.UpdateChessmen(initial, final)
             PrintBoard();
         }
 
