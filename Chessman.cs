@@ -14,12 +14,15 @@ namespace Chess
         public ChessmanName Name { get; set; }
         public bool IsWhite { get; set; }
         public bool Valid { get; set; }
+        public Point Position { get; set; }
+
         //public Imagine imagine { get; set; }
 
-        public Chessman(ChessmanName name, bool isWhite)
+        public Chessman(ChessmanName name, bool isWhite, Point position)
         {
             Name = name;
             IsWhite = isWhite;
+            Position = position;
             Valid = true;
         }
 
@@ -34,7 +37,7 @@ namespace Chess
 
     public class Nun : Chessman
     {
-        public Nun() : base(ChessmanName.Nun, false) { }
+        public Nun(Point position) : base(ChessmanName.Nun, false, position) { }
 
         public override bool VerifyMove(Point initial, Point final)
         {
@@ -45,7 +48,7 @@ namespace Chess
     public class Pawn : Chessman
     {
         public bool HasMove { get; set; }
-        public Pawn (bool isWhite) : base (ChessmanName.Pawn, isWhite)
+        public Pawn (bool isWhite, Point position) : base (ChessmanName.Pawn, isWhite, position)
         {
             HasMove = false;
         }
@@ -58,13 +61,15 @@ namespace Chess
                 Valid = false;
             if (Valid)
                 HasMove = true;
+            if (final.GetY == 8 && Valid)
+                MoveLogic.BecomesAnotherChessman();
             return Valid;
         }
     }
 
     public class Horse : Chessman
     {
-        public Horse(bool isWhite) : base(ChessmanName.Horse, isWhite) { }
+        public Horse(bool isWhite, Point position) : base(ChessmanName.Horse, isWhite, position) { }
         
         public override bool VerifyMove(Point initial, Point final)
         {
@@ -79,7 +84,7 @@ namespace Chess
 
     public class Bishop : Chessman
     {
-        public Bishop(bool isWhite) : base(ChessmanName.Bishop, isWhite)
+        public Bishop(bool isWhite, Point position) : base(ChessmanName.Bishop, isWhite, position)
         {
         }
         public override bool VerifyMove(Point initial, Point final)
@@ -93,7 +98,7 @@ namespace Chess
     public class Rook : Chessman
     {
         public bool HasMove { get; set; }
-        public Rook(bool isWhite) : base(ChessmanName.Rook, isWhite)
+        public Rook(bool isWhite, Point position) : base(ChessmanName.Rook, isWhite, position)
         {
             HasMove = false;
         }
@@ -110,7 +115,7 @@ namespace Chess
 
     public class Queen : Chessman
     {
-        public Queen(bool isWhite) : base(ChessmanName.Queen, isWhite) { }
+        public Queen(bool isWhite, Point position) : base(ChessmanName.Queen, isWhite, position) { }
 
         public override bool VerifyMove(Point initial, Point final)
         {
@@ -121,16 +126,18 @@ namespace Chess
         }
     }
 
-    public class King : Chessman
+    abstract class King : Chessman
     {
         public bool HasMove { get; set; }
-        public King(bool isWhite) : base(ChessmanName.King, isWhite)
+        public bool HasCastling { get; set; }
+        public King(bool isWhite, Point position) : base(ChessmanName.King, isWhite, position)
         {
             HasMove = false;
+            HasCastling = false;
         }
 
         // public bool Castling() {}
-        // public bool Check(Point final) {}
+        // public bool IsCheck(Point final) {}
 
         public override bool VerifyMove(Point initial, Point final)
         {

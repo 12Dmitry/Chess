@@ -6,25 +6,20 @@ using System.Threading.Tasks;
 
 namespace Chess
 {
-    public class DictionaryChessman
+    public class ListChessman
     {
-        private Dictionary<Point, Chessman> CoordinatesOfChessman;
+        private List<Chessman> CoordinatesOfChessman;
             
-        public DictionaryChessman()
+        public ListChessman()
         {
-            CoordinatesOfChessman = new Dictionary<Point, Chessman>(); //HACK если добавлять в него одинаковые значения, то он их не отлавливает (21стр.), они просто проходят как новые :(
+            CoordinatesOfChessman = new List<Chessman>(); //HACK нужно узнать как сделать так чтобы публичное поле можно было проверить на повторы или при возможности просто их убрать
         }
 
-        public void AddChessman(Point position, Chessman chessman)
+        public void AddChessman(Chessman chessman)
         {
-            if (CoordinatesOfChessman.Keys.Contains(position))
-                throw new ArgumentException("There is already a piece at this position");
-            else
-            {
-                CoordinatesOfChessman.Add(position, chessman);
-                ClassBoard.AddToBoard(position, chessman); //TODO: реализовать по другому, это нада сделать так чтобы сначало заполнять словарь, а потом добавлять на доску
-
-            }
+                //throw new ArgumentException("There is already a piece at this position");
+                CoordinatesOfChessman.Add(chessman);
+                ClassBoard.AddToBoard(chessman); //TODO: реализовать по другому, это нада сделать так чтобы сначало заполнять list, а потом добавлять на доску
         }
 
 

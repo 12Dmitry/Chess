@@ -9,6 +9,17 @@ namespace Chess
     public class Move
     {
         private static bool IsCheckmate { get; set; }
+
+        public static bool GetIsCheckmate
+        {
+            get { return IsCheckmate; }
+        }
+
+        private static void GiveUp()
+        {
+            IsCheckmate = true;
+        }
+
         public static void MakeMove() //TODO: рАазвести вывод и ввод и логику про это было гдето в ulearn
         {
             Console.WriteLine("If you wont exit write: ILOOSE");
@@ -38,16 +49,6 @@ namespace Chess
                 return new Point(1, 1);
             }
             throw new ArgumentException("That not convert to int or has the wrong entry");
-        }
-
-        private static void GiveUp()
-        {
-            IsCheckmate = true; 
-        }
-
-        public static bool GetIsCheckmate 
-        {
-            get { return IsCheckmate; }
         }
     }
 }

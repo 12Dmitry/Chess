@@ -11,14 +11,21 @@ namespace Chess
     {
         //TODO: проверить что в initial, проверить как это может дваигаться на board,
         //проверить можно ли это поставить в final
+        private static bool Cut(Chessman initial, Chessman final)
+        {
+            if (final.Name != ChessmanName.Nun || final.IsWhite != initial.IsWhite)
+                return true;
+            return false;
+        }
+
         public static bool MakeMoveLogic(Point initial, Point final)
         {
-            Chessman chessman = DeterminateChessman(initial); //TODO: Chessman figure = GetFigure(x1, y1); // получаем фигуру по координатам
-            //bool valid = figure.VerifyMove(x1, y1, x2, y2); // проверяем ход для этой фигуры
+            Chessman chessman = DeterminateChessman(initial); 
             if (chessman.Name == ChessmanName.Nun)
                 throw new ArgumentException("No chessman in this coordinate");
             if (!chessman.VerifyMove(initial, final) && !Cut(chessman, DeterminateChessman(final)))
                 throw new ArgumentException("Impossible move");
+            if (IsCheck(final))
             return true;
         }
 
@@ -27,11 +34,11 @@ namespace Chess
             return ClassBoard.Board[coordinate.GetX -1, coordinate.GetY -1].GetChessman; //TODO: обработать искл System.IndexOutOfRangeException:  
         }
 
-        private static bool Cut(Chessman initial, Chessman final)
+        public static void BecomesAnotherChessman()
         {
-            if (final.Name != ChessmanName.Nun || final.IsWhite != initial.IsWhite)
-                return true;
-            return false;
+            
         }
+        // public bool IsCheck(Point final) {}
+
     }
 }

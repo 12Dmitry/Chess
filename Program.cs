@@ -3,9 +3,9 @@
 ClassBoard.MakeBoard();
 ClassBoard.PrintBoard();
 
-DictionaryChessman white = new DictionaryChessman();
-white.AddChessman(new Point(1, 2), new Pawn(true));
-white.AddChessman(new Point(8, 1), new Rook(true));
+ListChessman white = new ListChessman();
+white.AddChessman(new Pawn(true, new Point(1, 2)));
+white.AddChessman(new Rook(true, new Point(8, 1)));
 
 
 while (true)

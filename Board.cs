@@ -23,24 +23,28 @@ namespace Chess
         }
 
         public static ClassBoard[,] Board = new ClassBoard[8, 8]; // HACK : !!! координаты смещены на -1 !!! и в коде это выглядит ужасно, как ДОПОЛНИТЕЛЬНАЯ ИНСТРУКЦИЯ ИЗВНЕ!!
+
         public static void MakeBoard()
         {
             for (int i = 0; i < 8; i++)
                 for (int j = 0; j < 8; j++)
-                    Board[i, j] = new ClassBoard(new Nun(), Convert.ToBoolean((i + j) % 2));
+                    Board[i, j] = new ClassBoard(new Nun(new Point (i+1, j+1)), Convert.ToBoolean((i + j) % 2));
         }
 
         public static void AddToBoard(Point initial, Point final)
         {
             Board[final.GetX - 1, final.GetY - 1].Chessman = Board[initial.GetX - 1, initial.GetY - 1].Chessman;
-            Board[initial.GetX - 1, initial.GetY - 1].Chessman = new Nun();
+            Board[initial.GetX - 1, initial.GetY - 1].Chessman = new Nun(initial);
+
             PrintBoard();
         }
 
 
-        public static void AddToBoard(Point position, Chessman chessman)
+        public static void AddToBoard(Chessman chessman)
         {
-            Board[position.GetX -1, position.GetY -1].Chessman = chessman;
+            Board[chessman.Position.GetX -1, chessman.Position.GetY -1].Chessman = chessman;
+            if (chessman.Name == ChessmanName.King)
+
             PrintBoard();
         }
 
