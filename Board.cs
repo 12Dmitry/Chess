@@ -31,12 +31,17 @@ namespace Chess
                     Board[i, j] = new ClassBoard(new Nun(new Point (i+1, j+1)), Convert.ToBoolean((i + j) % 2));
         }
 
+        public static Chessman DeterminateChessman(Point position)
+        {
+            return Board[position.GetX - 1, position.GetY - 1].GetChessman; //TODO: обработать искл System.IndexOutOfRangeException:  
+        }
+
         public static void AddMoveToBoard(Point initial, Point final)
         {
             Board[final.GetX - 1, final.GetY - 1].Chessman = Board[initial.GetX - 1, initial.GetY - 1].Chessman;
             Board[initial.GetX - 1, initial.GetY - 1].Chessman = new Nun(initial);
 
-            ListChessmen.UpdateChessmen(initial, final)
+            //ListChessmen.UpdateChessmen(initial, final);
             PrintBoard();
         }
 
@@ -44,7 +49,6 @@ namespace Chess
         public static void AddToBoard(Chessman chessman)
         {
             Board[chessman.Position.GetX -1, chessman.Position.GetY -1].Chessman = chessman;
-            if (chessman.Name == ChessmanName.King)
 
             PrintBoard();
         }
@@ -59,6 +63,11 @@ namespace Chess
                 Console.WriteLine();
                 Console.WriteLine();
             }
+            Console.WriteLine();
+            Console.Write('A' + "\t" + 'B' + "\t" + 'C' + "\t" + 'D' + "\t" + 'E' + "\t" + 'F' + "\t" + 'G' + "\t" + 'H');
+            Console.WriteLine();
+            Console.WriteLine();
+
         }
     }
 }

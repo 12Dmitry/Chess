@@ -14,15 +14,15 @@ namespace Chess
         {
                 //throw new ArgumentException("There is already a piece at this position");
                 Chessmen.Add(chessman);
-                ClassBoard.AddToBoard(chessman); //TODO: реализовать по другому, это нада сделать так чтобы сначало заполнять list, а потом добавлять на доску
+                ClassBoard.AddToBoard(FindChessmanToPosition(chessman.Position)); //TODO: реализовать по другому, это нада сделать так чтобы сначало заполнять list, а потом добавлять на доску
         }
 
-        public static Chessman FindChessmanToName(ChessmanName name, bool isWhite)
+        public static Chessman FindOneCopyChessmanToName(ChessmanName name, bool isWhite) //этотработать будет только для фигур в одном экз(
         {
             return Chessmen.Find(c => c.Name == name && c.IsWhite == isWhite);
         }
 
-        public static Chessman FindChessmanToPosition(Point position)
+        public static Chessman FindChessmanToPosition(Point position) // это работать не будет тк здесь тупа ссылки.
         {
             return Chessmen.Find(c => c.Position == position);
         }

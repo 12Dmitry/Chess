@@ -55,8 +55,8 @@ namespace Chess
 
         public override bool VerifyMove(Point initial, Point final)
         {
-            if (initial.GetX == final.GetX && (initial.GetY + 1 == final.GetY ||
-               (initial.GetY + 2 == final.GetY && HasMove))) ;
+            if (initial.GetX == final.GetX && (initial.GetY + 1 == final.GetY)) ;
+            else if (MoveLogic.IsVerticalMove(initial, final) && !HasMove) ;
             else
                 Valid = false;
             if (Valid)
@@ -84,16 +84,12 @@ namespace Chess
 
     public class Bishop : Chessman
     {
-        public bool DiagonlMove { get; set; }
-        public Bishop(bool isWhite, Point position) : base(ChessmanName.Bishop, isWhite, position)
-        {
-            DiagonlMove = true;
-        }
+        public Bishop(bool isWhite, Point position) : base(ChessmanName.Bishop, isWhite, position) {}
         public override bool VerifyMove(Point initial, Point final)
         {
-            if (Math.Abs(final.GetY - initial.GetY) != Math.Abs(final.GetX - initial.GetX))
-                return false;
-            return true;
+            if (MoveLogic.IsDiagonalMove(initial, final))
+                Valid = true;
+            return Valid;
         }
     }
 
@@ -105,16 +101,14 @@ namespace Chess
         public Rook(bool isWhite, Point position) : base(ChessmanName.Rook, isWhite, position)
         {
             HasMove = false;
-            VerticalMove = false;
-            GorizontalMove = false;
         }
         public override bool VerifyMove(Point initial, Point final)
         {
-            if (initial.GetX != final.GetX)
-                VerticalMove = true;
-            else if (initial.GetY != final.GetY)
-                GorizontalMove = true;
-            else
+            if (MoveLogic.IsVerticalMove(initial, final))
+                 Valid = true;
+            else if (MoveLogic.IsHorizontalMove(initial, final))
+                Valid = true;
+            else 
                 Valid = false;
             if (Valid)
                 HasMove = true;
@@ -124,30 +118,22 @@ namespace Chess
 
     public class Queen : Chessman
     {
-        public bool DiagonlMove { get; set; }
-        public bool VerticalMove { get; set; }
-        public bool GorizontalMove { get; set; }
-        public Queen(bool isWhite, Point position) : base(ChessmanName.Queen, isWhite, position) 
-        {
-            DiagonlMove = false;
-            VerticalMove = false;
-            GorizontalMove = false;
-        }
+        public Queen(bool isWhite, Point position) : base(ChessmanName.Queen, isWhite, position) {}
 
         public override bool VerifyMove(Point initial, Point final)
         {
-            if (Math.Abs(final.GetY - initial.GetY) == Math.Abs(final.GetX - initial.GetX))
-                DiagonlMove = true;
-            if (initial.GetX != final.GetX)
-                VerticalMove = true;
-            else if (initial.GetY != final.GetY)
-                GorizontalMove = true;
-            else return false;
-            return true;
+            if (MoveLogic.IsDiagonalMove(initial, final))
+                 Valid = true;
+            else if (MoveLogic.IsVerticalMove(initial, final))
+                 Valid = true;
+            else if (MoveLogic.IsHorizontalMove(initial, final))
+                Valid = true;
+            else Valid = false;
+            return Valid;
         }
     }
 
-    abstract class King : Chessman
+    public class King : Chessman 
     {
         public bool HasMove { get; set; }
         public bool HasCastling { get; set; }
