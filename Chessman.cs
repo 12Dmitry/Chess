@@ -56,7 +56,7 @@ namespace Chess
         public override bool VerifyMove(Point initial, Point final)
         {
             if (initial.GetX == final.GetX && (initial.GetY + 1 == final.GetY)) ;
-            else if (MoveLogic.IsVerticalMove(initial, final) && !HasMove) ;
+            else if (MoveLogic.CheckVerticalMove(initial, final) && !HasMove) ;
             else
                 Valid = false;
             if (Valid)
@@ -87,7 +87,7 @@ namespace Chess
         public Bishop(bool isWhite, Point position) : base(ChessmanName.Bishop, isWhite, position) {}
         public override bool VerifyMove(Point initial, Point final)
         {
-            if (MoveLogic.IsDiagonalMove(initial, final))
+            if (MoveLogic.CheckDiagonalMove(initial, final))
                 Valid = true;
             return Valid;
         }
@@ -104,9 +104,9 @@ namespace Chess
         }
         public override bool VerifyMove(Point initial, Point final)
         {
-            if (MoveLogic.IsVerticalMove(initial, final))
+            if (MoveLogic.CheckVerticalMove(initial, final))
                  Valid = true;
-            else if (MoveLogic.IsHorizontalMove(initial, final))
+            else if (MoveLogic.CheckHorizontalMove(initial, final))
                 Valid = true;
             else 
                 Valid = false;
@@ -122,11 +122,11 @@ namespace Chess
 
         public override bool VerifyMove(Point initial, Point final)
         {
-            if (MoveLogic.IsDiagonalMove(initial, final))
+            if (MoveLogic.CheckDiagonalMove(initial, final))
                  Valid = true;
-            else if (MoveLogic.IsVerticalMove(initial, final))
+            else if (MoveLogic.CheckVerticalMove(initial, final))
                  Valid = true;
-            else if (MoveLogic.IsHorizontalMove(initial, final))
+            else if (MoveLogic.CheckHorizontalMove(initial, final))
                 Valid = true;
             else Valid = false;
             return Valid;
@@ -148,7 +148,7 @@ namespace Chess
 
         public override bool VerifyMove(Point initial, Point final)
         {
-            if (Math.Abs(final.GetX - initial.GetX) > 1 || Math.Abs(final.GetY - initial.GetY) > 1)
+            if (Math.Abs(final.GetX - initial.GetX) > 1 || Math.Abs(final.GetY - initial.GetY) > 1) 
                 Valid = false;
             //else Castling()
             if (Valid)

@@ -33,7 +33,7 @@ namespace Chess
 
         public static Chessman DeterminateChessman(Point position)
         {
-            return Board[position.GetX - 1, position.GetY - 1].GetChessman; //TODO: обработать искл System.IndexOutOfRangeException:  
+            return Board[position.GetX - 1, position.GetY - 1].GetChessman; 
         }
 
         public static void AddMoveToBoard(Point initial, Point final)

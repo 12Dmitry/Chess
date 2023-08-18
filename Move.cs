@@ -22,7 +22,7 @@ namespace Chess
 
         public static void MakeMove() //TODO: рАазвести вывод и ввод и логику про это было гдето в ulearn
         {
-            Console.WriteLine("If you wont exit write: ILOOSE");
+            //Console.WriteLine("If you wont exit write: ILOOSE");
             Console.WriteLine("First coordinates: ");
             Point initial = ArringeCoordinates(Console.ReadLine());
             Console.WriteLine("Second coordinates: ");
@@ -30,10 +30,7 @@ namespace Chess
             if (MoveLogic.MakeMoveLogic(initial, final))
                 ClassBoard.AddMoveToBoard(initial, final);
             else
-            {
-                Console.WriteLine("Wrong move");
-                MakeMove();
-            }
+               MakeError("Wrong move");
         }
 
         public static Point ArringeCoordinates(string coordinates)
@@ -49,6 +46,15 @@ namespace Chess
                 return new Point(1, 1);
             }
             throw new ArgumentException("That not convert to int or has the wrong entry");
+        }
+
+        public static void MakeError(string errorDescription)
+        {
+            Console.SetCursorPosition(0, Console.CursorTop - 4);
+            Console.WriteLine(errorDescription + "           ");
+            Console.WriteLine("   ");
+            Console.WriteLine("                              ");
+            MakeMove();
         }
     }
 }
