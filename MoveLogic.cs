@@ -9,8 +9,6 @@ namespace Chess
     public class MoveLogic
 
     {
-        //TODO: проверить что в initial, проверить как это может дваигаться на board,
-        //проверить можно ли это поставить в final
         public static bool MakeMoveLogic(Point initial, Point final)
         {
             Chessman chessman = ClassBoard.DeterminateChessman(initial);
@@ -22,6 +20,11 @@ namespace Chess
             if (!chessman.VerifyMove(initial, final)) //&& !Cut(chessman, ListChessmen.FindChessmanToPosition(final)))
             {
                 Move.MakeError("Impossible move");
+                return false;
+            }
+            if (!Cut(chessman, ClassBoard.DeterminateChessman(final)))
+            {
+                Move.MakeError("Impossible cut");
                 return false;
             }
 
@@ -91,7 +94,7 @@ namespace Chess
 
         private static bool Cut(Chessman initial, Chessman final)
         {
-            if (final.Name != ChessmanName.Nun || final.IsWhite != initial.IsWhite)
+            if (final.Name != ChessmanName.Nun && final.IsWhite != initial.IsWhite || final.Name == ChessmanName.Nun)
                 return true;
             return false;
         }

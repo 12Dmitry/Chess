@@ -45,7 +45,8 @@ namespace Chess
                 GiveUp();
                 return new Point(1, 1);
             }
-            throw new ArgumentException("That not convert to int or has the wrong entry");
+            MakeError("That not convert to int or has the wrong entry");
+            return new Point(1, 1);
         }
 
         public static void MakeError(string errorDescription)

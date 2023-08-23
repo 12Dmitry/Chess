@@ -41,7 +41,7 @@ namespace Chess
             Board[final.GetX - 1, final.GetY - 1].Chessman = Board[initial.GetX - 1, initial.GetY - 1].Chessman;
             Board[initial.GetX - 1, initial.GetY - 1].Chessman = new Nun(initial);
 
-            //ListChessmen.UpdateChessmen(initial, final);
+            ListChessmen.UpdateChessmen(initial, final);
             PrintBoard();
         }
 
@@ -53,21 +53,39 @@ namespace Chess
             PrintBoard();
         }
 
-        public static void PrintBoard() // переделать в stringbulder!!!
+        public static void PrintBoard() 
         {
             Console.Clear(); // TODO: переместить это в отдельный метод
+            string black = "'";
+            StringBuilder sb = new StringBuilder(); // создаем объект StringBuilder
             for (int i = 7; i >= 0; i--)
             {
                 for (int j = 0; j < 8; j++)
-                    Console.Write((int)(Board[j, i].Chessman.Name) + "\t"); //TODO: у меня доска перевернута, такчто скорее всего логику, где x y нужно будет писать учитывая это хотя хз
-                Console.WriteLine();
-                Console.WriteLine();
+                {  // TODO: Будет удачнее черные раскрасить в красный и оставить опострофы только для клеток
+                    // если фигура или клетка черная, то добавляем знак " ' "
+                    if (!Board[j, i].IsWhite)
+                    {
+                        if (Board[j, i].GetChessman.Name != ChessmanName.Nun && Board[j, i].GetChessman.IsWhite)
+                            sb.Append((int)(Board[j, i].Chessman.Name) + "\t");
+                        else
+                            sb.Append((int)(Board[j, i].Chessman.Name) + black + "\t");
+                    }
+                    else // иначе добавляем без знака
+                    {
+                        if (Board[j, i].GetChessman.Name != ChessmanName.Nun && !Board[j, i].GetChessman.IsWhite)
+                            sb.Append((int)(Board[j, i].Chessman.Name) + black + "\t");
+                        else
+                            sb.Append((int)(Board[j, i].Chessman.Name) + "\t");
+                    }
+                }
+                sb.AppendLine(); 
+                sb.AppendLine();
             }
-            Console.WriteLine();
-            Console.Write('A' + "\t" + 'B' + "\t" + 'C' + "\t" + 'D' + "\t" + 'E' + "\t" + 'F' + "\t" + 'G' + "\t" + 'H');
-            Console.WriteLine();
-            Console.WriteLine();
-
+            sb.AppendLine();
+            sb.Append('A' + "\t" + 'B' + "\t" + 'C' + "\t" + 'D' + "\t" + 'E' + "\t" + 'F' + "\t" + 'G' + "\t" + 'H');
+            sb.AppendLine();
+            sb.AppendLine();
+            Console.Write(sb.ToString()); 
         }
     }
 }

@@ -9,3 +9,4 @@
 
 
 https://codereview.stackexchange.com/questions/237356/chess-model-in-c-to-getavailablemoves - здесь делают тоже что-то типа шахмат (интересные примечания)
+Эх, здесь то как я представлял себе шахматы, но теперь я понимаю, что это не совсем верно.

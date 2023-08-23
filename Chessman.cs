@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Chess
 {
-    public enum ChessmanName { Nun = 0, Pawn = 1, Horse = 3, Bishop = 3, Rook = 5, Queen = 9, King = 111 }; //TODO: на юлеарн показывали как и где его ставить.
+    public enum ChessmanName { Nun = 0, Pawn = 1, Horse = 3, Bishop = 4, Rook = 5, Queen = 9, King = 111 }; 
 
     public abstract class Chessman
     {
@@ -84,7 +84,7 @@ namespace Chess
 
     public class Bishop : Chessman
     {
-        public Bishop(bool isWhite, Point position) : base(ChessmanName.Bishop, isWhite, position) {}
+        public Bishop(bool isWhite, Point position) : base(ChessmanName.Bishop, isWhite, position) { }
         public override bool VerifyMove(Point initial, Point final)
         {
             if (MoveLogic.CheckDiagonalMove(initial, final))
@@ -96,8 +96,6 @@ namespace Chess
     public class Rook : Chessman
     {
         public bool HasMove { get; set; }
-        public bool VerticalMove { get; set; }
-        public bool GorizontalMove { get; set; }
         public Rook(bool isWhite, Point position) : base(ChessmanName.Rook, isWhite, position)
         {
             HasMove = false;
@@ -118,7 +116,7 @@ namespace Chess
 
     public class Queen : Chessman
     {
-        public Queen(bool isWhite, Point position) : base(ChessmanName.Queen, isWhite, position) {}
+        public Queen(bool isWhite, Point position) : base(ChessmanName.Queen, isWhite, position) { }
 
         public override bool VerifyMove(Point initial, Point final)
         {
@@ -143,14 +141,19 @@ namespace Chess
             HasCastling = false;
         }
 
-        // public bool Castling() {}
+        public bool Castling(Point initial, Point final)
+        {
+            return false;
+        }
+
         // public bool DeclareCheck(Point final) {}
 
         public override bool VerifyMove(Point initial, Point final)
         {
-            if (Math.Abs(final.GetX - initial.GetX) > 1 || Math.Abs(final.GetY - initial.GetY) > 1) 
+            if (Math.Abs(final.GetX - initial.GetX) <= 1 || Math.Abs(final.GetY - initial.GetY) <= 1) ;
+            else if (Castling(initial, final)) ;
+            else
                 Valid = false;
-            //else Castling()
             if (Valid)
                 HasMove = true;
             return Valid;
