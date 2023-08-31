@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 
 namespace Chess
 {
+
     public enum ChessmanName { Nun = 0, Pawn = 1, Horse = 3, Bishop = 4, Rook = 5, Queen = 9, King = 111 }; 
 
     public abstract class Chessman
     {
-        public ChessmanName Name { get; set; }
-        public bool IsWhite { get; set; }
-        public bool Valid { get; set; }
-        public Point Position { get; set; }
 
+        public ChessmanName Name { get; set; }
+        public Chessman Chessman { get; set; }
         //public Imagine imagine { get; set; }
 
         public Chessman(ChessmanName name, bool isWhite, Point position)

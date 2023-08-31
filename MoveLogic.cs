@@ -27,7 +27,6 @@ namespace Chess
                 Move.MakeError("Impossible cut");
                 return false;
             }
-
             return true;
         }
 
