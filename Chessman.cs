@@ -1,86 +1,161 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Chess
 {
-    public enum Chessman { Nun = 0, Pawn = 1, Horse = 3, Bishop = 3, Rook = 5, Queen = 9, King = 7 }; //TODO: на юлеарн показывали как и где его ставить.
 
-    public abstract class ClassChessman
+    public enum ChessmanName { Nun = 0, Pawn = 1, Horse = 3, Bishop = 4, Rook = 5, Queen = 9, King = 111 }; 
+
+    public abstract class Chessman
     {
+
+        public ChessmanName Name { get; set; }
         public Chessman Chessman { get; set; }
-        public bool IsWhite { get; set; }
         //public Imagine imagine { get; set; }
 
-        public abstract bool CheckMove(Point initial, Point final);
+        public Chessman(ChessmanName name, bool isWhite, Point position)
+        {
+            Name = name;
+            IsWhite = isWhite;
+            Position = position;
+            Valid = true;
+        }
+
+        public abstract bool VerifyMove(Point initial, Point final);
+
+        // Переопределение метода ToString
+        /*public override string ToString()
+        {
+            return $"Chessmen: Name = {Name}, IsWhite = {IsWhite}, Valid = {Valid}";
+        }*/
     }
 
-    public class Pawn : ClassChessman
+    public class Nun : Chessman
     {
-        Chessman chesman = Chessman.Pawn;
-        public override bool CheckMove(Point initial, Point final)
+        public Nun(Point position) : base(ChessmanName.Nun, false, position) { }
+
+        public override bool VerifyMove(Point initial, Point final)
         {
-            if (initial.GetX != final.GetX || initial.GetY + 1 != final.GetY)
-                return false;
-            else return true;
+            return false;
         }
     }
 
-    public class Horse : ClassChessman
+    public class Pawn : Chessman
     {
-        Chessman chesman = Chessman.Horse;
-        public override bool CheckMove(Point initial, Point final)
+        public bool HasMove { get; set; }
+        public Pawn (bool isWhite, Point position) : base (ChessmanName.Pawn, isWhite, position)
         {
-            if ((Math.Abs(initial.GetX - final.GetX) != 1 || Math.Abs(initial.GetY - final.GetY) != 2)
-            && (Math.Abs(initial.GetX - final.GetX) != 2 || Math.Abs(initial.GetY - final.GetY) != 1))
-                return false;
-            if
-            else return true;
+            HasMove = false;
+        }
+
+        public override bool VerifyMove(Point initial, Point final)
+        {
+            if (initial.GetX == final.GetX && (initial.GetY + 1 == final.GetY)) ;
+            else if (MoveLogic.CheckVerticalMove(initial, final) && !HasMove) ;
+            else
+                Valid = false;
+            if (Valid)
+                HasMove = true;
+            if (final.GetY == 8 && Valid) ;
+                //MoveLogic.BecomesAnotherChessman();
+            return Valid;
         }
     }
 
-    public class Bishop : ClassChessman
+    public class Horse : Chessman
     {
-        public override bool CheckMove(Point initial, Point final)
+        public Horse(bool isWhite, Point position) : base(ChessmanName.Horse, isWhite, position) { }
+        
+        public override bool VerifyMove(Point initial, Point final)
         {
-            if (Math.Abs(initial.GetX - final.GetX) != Math.Abs(initial.GetY - final.GetY))
-                return false;
-            else return true;
+            if ((Math.Abs(initial.GetX - final.GetX) == 1 || Math.Abs(initial.GetY - final.GetY) == 2)
+            && (Math.Abs(initial.GetX - final.GetX) == 2 || Math.Abs(initial.GetY - final.GetY) == 1)) ;
+            else
+                Valid = false;
+
+            return Valid;
         }
     }
 
-    public class Rook : ClassChessman
+    public class Bishop : Chessman
     {
-        public override bool CheckMove(Point initial, Point final)
+        public Bishop(bool isWhite, Point position) : base(ChessmanName.Bishop, isWhite, position) { }
+        public override bool VerifyMove(Point initial, Point final)
         {
-            if (initial.GetX != final.GetX && initial.GetY != final.GetY)
-                return false;
-            else return true;
+            if (MoveLogic.CheckDiagonalMove(initial, final))
+                Valid = true;
+            return Valid;
         }
     }
 
-    public class Queen : ClassChessman
+    public class Rook : Chessman
     {
-        public override bool CheckMove(Point initial, Point final)
+        public bool HasMove { get; set; }
+        public Rook(bool isWhite, Point position) : base(ChessmanName.Rook, isWhite, position)
         {
-            if (initial.GetX != final.GetX && initial.GetY != final.GetY
-                && Math.Abs(initial.GetX - final.GetX) != Math.Abs(initial.GetY - final.GetY))
-                return false;
-            else return true;
+            HasMove = false;
+        }
+        public override bool VerifyMove(Point initial, Point final)
+        {
+            if (MoveLogic.CheckVerticalMove(initial, final))
+                 Valid = true;
+            else if (MoveLogic.CheckHorizontalMove(initial, final))
+                Valid = true;
+            else 
+                Valid = false;
+            if (Valid)
+                HasMove = true;
+            return Valid;
         }
     }
 
-    public class King : ClassChessman
+    public class Queen : Chessman
     {
-        public override bool CheckMove(Point initial, Point final)
+        public Queen(bool isWhite, Point position) : base(ChessmanName.Queen, isWhite, position) { }
+
+        public override bool VerifyMove(Point initial, Point final)
         {
-            if (Math.Abs(final.GetX - initial.GetX) > 1 || Math.Abs(final.GetY - initial.GetY) > 1)
-            {
-                return false;
-            }
-            return true;
+            if (MoveLogic.CheckDiagonalMove(initial, final))
+                 Valid = true;
+            else if (MoveLogic.CheckVerticalMove(initial, final))
+                 Valid = true;
+            else if (MoveLogic.CheckHorizontalMove(initial, final))
+                Valid = true;
+            else Valid = false;
+            return Valid;
+        }
+    }
+
+    public class King : Chessman 
+    {
+        public bool HasMove { get; set; }
+        public bool HasCastling { get; set; }
+        public King(bool isWhite, Point position) : base(ChessmanName.King, isWhite, position)
+        {
+            HasMove = false;
+            HasCastling = false;
+        }
+
+        public bool Castling(Point initial, Point final)
+        {
+            return false;
+        }
+
+        // public bool DeclareCheck(Point final) {}
+
+        public override bool VerifyMove(Point initial, Point final)
+        {
+            if (Math.Abs(final.GetX - initial.GetX) <= 1 || Math.Abs(final.GetY - initial.GetY) <= 1) ;
+            else if (Castling(initial, final)) ;
+            else
+                Valid = false;
+            if (Valid)
+                HasMove = true;
+            return Valid;
         }
     }
 }

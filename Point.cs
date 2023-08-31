@@ -11,7 +11,7 @@ namespace Chess
         private int X { get; set; }
         private int Y { get; set; }
 
-        public Point (int x, int y)
+        public Point (int x , int y)
         {
             if (x < 1 || x > 8)
                 throw new ArgumentException("x must be between 1 and 8");
