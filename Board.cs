@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,12 +10,14 @@ namespace Chess;
 
 public class Board
 {
-    public static Square[,] board = new Square[8, 8];
+    public const int Size = 8;
+
+    public static Square[,] board = new Square[Size, Size];
 
     public static void MakeBoard()
     {
-        for (int i = 0; i < 8; i++)
-            for (int j = 0; j < 8; j++)
+        for (int i = 0; i < Size; i++)
+            for (int j = 0; j < Size; j++)
                 board[i, j] = new Square(new Nun(new Point(i + 1, j + 1)), Convert.ToBoolean((i + j) % 2));
     }
 

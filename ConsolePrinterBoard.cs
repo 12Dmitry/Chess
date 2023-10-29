@@ -9,34 +9,39 @@ namespace Chess;
 
 public class ConsolePrinterBoard
 {
-    public static void Print() 
+    public static void Print()
     {
         Console.Clear(); // TODO: переместить это в отдельный метод?
+
+        string sepporator = "------";
         string blackSquare = "'";
         string blackChessman = ".";
+        // мне нужно чтобы я мог конвертировать эти символы во что захочу, не только в int
+        // я думаю сделать вместо (int) переменную в которую могу потожить int или string чтобы в зависимости от ситуации приводить к тому что мне сейчпс нужно
         StringBuilder board = new StringBuilder();
-        for (int i = 7; i >= 0; i--)
+        for (int i = Board.Size - 1; i >= 0; i--)
         {
-            for (int j = 0; j < 8; j++)
-            {  
-               // если фигура ч то "." ;клетка черная, то знак " ' "
+            for (int j = 0; j < Board.Size; j++)
+            {
+                // если фигура ч то "." ;клетка черная, то знак " ' "
                 if (!Board.board[j, i].IsWhite)
                 {
                     if (Board.board[j, i].Chessman.Name != ChessmanName.Nun && !Board.board[j, i].Chessman.IsWhite)
-                        board.Append((int)(Board.board[j, i].Chessman.Name) + blackChessman + blackSquare + "\t");
+                        board.Append("|" + (char)(Board.board[j, i].Chessman.Name) + blackChessman + blackSquare + "\t" + "|");
                     else
-                        board.Append((int)(Board.board[j, i].Chessman.Name) + blackSquare + "\t");
+                        board.Append("|" + (char)(Board.board[j, i].Chessman.Name) + blackSquare + "\t" + "|");
                 }
                 else // иначе добавляем без знака
                 {
                     if (Board.board[j, i].Chessman.Name != ChessmanName.Nun && !Board.board[j, i].Chessman.IsWhite)
-                        board.Append((int)(Board.board[j, i].Chessman.Name) + blackChessman + "\t");
+                        board.Append("|" + (char)(Board.board[j, i].Chessman.Name) + blackChessman + "\t" + "|");
                     else
-                        board.Append((int)(Board.board[j, i].Chessman.Name) + "\t");
+                        board.Append("|" + (char)(Board.board[j, i].Chessman.Name) + "\t" + "|");
                 }
             }
-            board.AppendLine();
-            board.AppendLine();
+            board.Append("\n");
+            board.AppendLine("|" +  "\t" + "|" + "|" + "\t" + "|" + "|" + "\t" + "|" + "|" + "\t" + "|" + "|" + "\t" + "|" + "|" + "\t" + "|" + "|" + "\t" + "|" + "|" + "\t" + "|");
+            board.AppendLine("|" + sepporator + " |" + "|" + sepporator + "|" + "|" + sepporator + "|" + "|" + sepporator + "|" + "|" + sepporator + "|" + "|" + sepporator + "|" + "|" + sepporator + "|" + "|" + sepporator + " | ");
         }
         board.AppendLine();
         board.Append('A' + "\t" + 'B' + "\t" + 'C' + "\t" + 'D' + "\t" + 'E' + "\t" + 'F' + "\t" + 'G' + "\t" + 'H');

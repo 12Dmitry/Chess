@@ -11,5 +11,11 @@ public class Player
 {
     public bool IsWhite { get; private set; }
 
-    private List<Chessman> PlayerChessmans; // хранит все доступные фигуры игрока
+    public Player (bool isWhite)
+    {
+        this.IsWhite = isWhite;
+    }
+
+    private List<Chessman> PlayerChessmans; // хранит все доступные фигуры игрока, но нужно ли мне это?
+
 }

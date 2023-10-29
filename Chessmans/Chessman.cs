@@ -1,9 +1,8 @@
 ﻿namespace Chess.Chessmans;
-public enum ChessmanName { Nun = 0, Pawn = 1, Horse = 3, Bishop = 4, Rook = 5, Queen = 9, King = 111 }; // TODO: мб можно через кодировку залать фигуры King = '\u2654'
+public enum ChessmanName { Nun = ' ', Pawn = 'p', Horse = 'N', Bishop = 'B', Rook = 'R', Queen = 'Q', King = 'K' }; // TODO: мб можно через кодировку залать фигуры King = '\u2654' 
 
 public abstract class Chessman
 {
-
     public ChessmanName Name { get; set; }
     public bool IsWhite { get; set; }
     public Point Position { get; set; }
