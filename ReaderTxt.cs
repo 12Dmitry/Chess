@@ -1,45 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Chess.Factory;
+using Chess.Player;
 
-namespace Chess.Chessmans
+namespace Chess;
+
+public class ReaderTxt
 {
-    public class ReaderTxt
+    // длина строки в файле должна быть 17,т.к. чтобы понять какого цвета фигура
+    // он должен увидеть в след символе после фигуры пробел - белая или точку - черная.   - это ваабще можно где-то указать? 
+    //private static readonly string _path = Path.Combine(Environment.CurrentDirectory, "ChessBoard.txt"); TODO : мне нужно чтобы зддесь лежал путь до ChessBoard.txt!
+    private static readonly string[] lines = File.ReadAllLines(@"C:\\Users\\Dmitry\\Source\\Repos\\12Dmitry\\Chess\\ChessBoard.txt");
+
+    public ChessmanName ConvertCharToChessmanName(char ch) // TODO : помоему это не здесь должно быть или норм, оставить и сделатьь статическим как ваабще определять это?
     {
-        private static string[] lines = File.ReadAllLines("ChessBoard.txt");
+        string name = Enum.GetName(typeof(ChessmanName), (int)ch)!;
+        if (name != null)
+            return (ChessmanName)Enum.Parse(typeof(ChessmanName), name);
+        throw new ArgumentException("ChessmanName dos't exsist " + "'" + ch + "'");
+    }
 
-        public Chessman ConvertCharToChessman(char ch)
+    public static void Encoding(WhitePlayer white, BlackPlayer black)
+    {
+        IsRightFormatTxt();
+
+        var wFactory = new WhiteChessmanFactory();
+        var bFactory = new BlackChessmanFactory();
+        var reader = new ReaderTxt();
+        for (int i = 0; i < lines.Length; i++)
         {
-            string s = ch.ToString();
-            ChessmanName cn;
-            if (Enum.TryParse<ChessmanName>(s, out cn))
-                return cn;
-            throw new ArgumentException("ChessmanName dos't exsist " + ch);
-        }
-
-        public bool ChekIsWhite(char ch)
-        {
-            if (ch == ' ')
-                return true;
-            if (ch == '.')
-                return false;
-            else
-                throw new ArgumentException("The argument may be only whitespace - is white or point - is black");
-        }
-
-        public static void Encoding()
-        {
-            var Chessmans = new List<Chessman>();
-            var reader = new ReaderTxt();
-            for (int i = 0; i < lines.Length; i++)
-                for (int j = 0; j < lines[i].Length; j += 2)
-                {
-                    Chessman cs = new Chessman(reader.ConvertCharToChessmanName(lines[i][j]), reader.ChekIsWhite(lines[i][j++]), new Point(j, i));
-                    Chessmans.Add(cs);
-                }
-
+            int x = 1; // QUIZ : на сколько этоо норм, что переменная объявляется в цикле?
+            for (int j = 0; j < lines[i].Length; j += 2)
+            {
+                if (ChekIsWhite(lines[i][j + 1]) && lines[i][j] != ' ')
+                    white.AddChessman(wFactory.CreateChessman(reader.ConvertCharToChessmanName(lines[i][j]), new Point(x, i + 1)));
+                if (lines[i][j] != ' ')
+                    black.AddChessman(bFactory.CreateChessman(reader.ConvertCharToChessmanName(lines[i][j]), new Point(x, i + 1)));
+                x++;
+            }
         }
     }
+
+    private static void IsRightFormatTxt()
+    {
+        if (lines.Length != 8)
+            throw new ArgumentException("txt документ должен иметь 8 строк");
+        foreach (string line in lines)
+            if (lines.Length != 16)
+                throw new ArgumentException("В строке txt документа должено быть 17 символов");
+    }
+    
+    private static bool ChekIsWhite(char ch)
+    {
+        if (ch == ' ')
+            return true;
+        if (ch == '.')
+            return false;
+        else
+            throw new ArgumentException("The argument may be only whitespace - is white or point - is black");
+    }
+
 }

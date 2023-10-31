@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Chess.Factory.Factory.Chessmans;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Chess.Chessmans;
 
 namespace Chess;
 
@@ -11,33 +11,32 @@ public class MoveLogic
 {
     public static bool VerifyMoveLogic(Point initial, Point final)
     {
-        MessagesForPlayer error = new MessagesForPlayer();
-        Chessman chessman = Board.DeterminateChessman(initial);
+        IChessman chessman = Board.DeterminateChessman(initial);
         if (chessman.Name == ChessmanName.Nun)
         {
-            error.Error("No chessman in this coordinate");
+            MessagesForPlayer.Error("No chessman in this coordinate");
             return false;
         }
         if (!chessman.VerifyMove(initial, final)) 
         {
-            error.Error("Impossible move");
+            MessagesForPlayer.Error("Impossible move");
             return false;
         }
         if (!Cut(chessman, Board.DeterminateChessman(final)))
         {
-            error.Error("Impossible cut");
+            MessagesForPlayer.Error("Impossible cut");
             return false;
         }
+        chessman.Position = final; // TODO : УБРАТЬ В ДРУГОЕ МЕСТО и еще есть сомнения в том что она будет везде обновляться..
         return true;
     }
 
-    //public bool DeclareCheck(Chessman chessman, Point final) // TODO наверное это должно быть как состояние.. чтобы это не значило
-    //{
-    //    if (chessman.VerifyMove(final, Board.FindOneCopyChessmanToName(ChessmanName.King, !chessman.IsWhite).Position))
-    //        return true;
-    //    return false;
-    //}
-
+    public static bool Cut(IChessman initial, IChessman final)
+    {
+        if (final.Name != ChessmanName.Nun && final.IsWhite != initial.IsWhite || final.Name == ChessmanName.Nun)
+            return true;
+        return false;
+    }    
 
     public static bool CheckDiagonalMove(Point initial, Point final)
     {
@@ -89,13 +88,6 @@ public class MoveLogic
                     return false;
             return true;
         }
-        return false;
-    }
-
-    private static bool Cut(Chessman initial, Chessman final)
-    {
-        if (final.Name != ChessmanName.Nun && final.IsWhite != initial.IsWhite || final.Name == ChessmanName.Nun)
-            return true;
         return false;
     }
 }

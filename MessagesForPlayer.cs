@@ -13,7 +13,7 @@ public class MessagesForPlayer
         return Point.ArringeCoordinates(Console.ReadLine()!);
     }
 
-    public void Error(string errorDescription)
+    public static void Error(string errorDescription)
     {
         Console.SetCursorPosition(0, Console.CursorTop - 3);
         Console.WriteLine(errorDescription + "           ");

@@ -1,26 +1,18 @@
 ﻿using Chess;
-using Chess.Chessmans;
+using Chess.Player;
 
 Board.MakeBoard();
 ConsolePrinterBoard.Print();
 
+var wPlayer = new WhitePlayer("name");
+var bPlayer = new BlackPlayer("bob");
 
-Board.AddChessman(new Pawn(true, new Point(1, 2)));
-Board.AddChessman(new Pawn(true, new Point(2, 2)));
-Board.AddChessman(new Pawn(true, new Point(3, 2)));
-Board.AddChessman(new Pawn(true, new Point(4, 2)));
-Board.AddChessman(new Pawn(true, new Point(5, 2)));
-Board.AddChessman(new Pawn(true, new Point(6, 2)));
-Board.AddChessman(new Pawn(true, new Point(7, 2)));
-Board.AddChessman(new Pawn(true, new Point(8, 2)));
-Board.AddChessman(new Rook(true, new Point(8, 1)));
-Board.AddChessman(new Rook(true, new Point(1, 1)));
-Board.AddChessman(new Queen(false, new Point(5, 8)));
-Board.AddChessman(new King(true, new Point(4, 1)));
+ReaderTxt.Encoding(wPlayer, bPlayer);
 
+Board.AddChessmansToBoard(bPlayer.PlayerChessmans);
+Board.AddChessmansToBoard(wPlayer.PlayerChessmans);
 
-
-while (true)
+while (true) // TODO : переделать?
 {
     Console.WriteLine("Plauer1 move");
     Move.VerifyMove();
