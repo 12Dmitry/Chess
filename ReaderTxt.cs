@@ -7,8 +7,8 @@ public class ReaderTxt
 {
     // длина строки в файле должна быть 17,т.к. чтобы понять какого цвета фигура
     // он должен увидеть в след символе после фигуры пробел - белая или точку - черная.   - это ваабще можно где-то указать? 
-    //private static readonly string _path = Path.Combine(Environment.CurrentDirectory, "ChessBoard.txt"); TODO : мне нужно чтобы зддесь лежал путь до ChessBoard.txt!
-    private static readonly string[] lines = File.ReadAllLines(@"C:\\Users\\Dmitry\\Source\\Repos\\12Dmitry\\Chess\\ChessBoard.txt");
+    private static string _path = Path.Combine(Environment.CurrentDirectory, "ChessBoard.txt"); //HACK : мне обязательно нужно чтобы здесь лежал путь до ChessBoard.txt! QUIZ :как мне ужнать путь до жтого места
+    private static readonly string[] lines = File.ReadAllLines(_path);   //@"C:\\Users\\Dmitry\\Source\\Repos\\12Dmitry\\Chess\\ChessBoard.txt"
 
     public ChessmanName ConvertCharToChessmanName(char ch) // TODO : помоему это не здесь должно быть или норм, оставить и сделатьь статическим как ваабще определять это?
     {
@@ -44,7 +44,7 @@ public class ReaderTxt
         if (lines.Length != 8)
             throw new ArgumentException("txt документ должен иметь 8 строк");
         foreach (string line in lines)
-            if (lines.Length != 16)
+            if (line.Length != 16)
                 throw new ArgumentException("В строке txt документа должено быть 17 символов");
     }
     
@@ -55,7 +55,7 @@ public class ReaderTxt
         if (ch == '.')
             return false;
         else
-            throw new ArgumentException("The argument may be only whitespace - is white or point - is black");
+            throw new ArgumentException("The argument may be only whitespace - is white or point - is black"); // QUIZ : как лучше писать на английском или на русском?
     }
 
 }

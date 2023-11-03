@@ -24,8 +24,6 @@ public class Move // TODO : мб VerifyMove в Player, а класс переи�
             else
                 MessagesForPlayer.Error("Check!");
         }
-        else
-            MessagesForPlayer.Error("Wrong move");
     }    
 
     private static void ToLose()

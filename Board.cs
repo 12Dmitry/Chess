@@ -10,9 +10,9 @@ public class Board
 
     public static void MakeBoard()
     {
-        for (int i = 0; i < Size; i++)
-            for (int j = 0; j < Size; j++)
-                board[i, j] = new Square(new Nun(new Point(i + 1, j + 1)), Convert.ToBoolean((i + j) % 2));
+        for (int y = 0; y < Size; y++)
+            for (int x = 0; x < Size; x++)
+                board[y, x] = new Square(new Nun(new Point(x + 1, y + 1)), Convert.ToBoolean((y + x) % 2));
     }
 
     public static IChessman DeterminateChessman(Point position) // TODO :помоему это не тут должно быть

@@ -18,22 +18,23 @@ public class Pawn : IChessman
     {
         IChessman chessman = Board.DeterminateChessman(final);
         bool hasChessman = chessman.Name != ChessmanName.Nun && chessman.IsWhite != this.IsWhite;
-        return hasChessman && initial.Y + 1 == final.Y && (initial.X == final.X - 1 || initial.X == final.X + 1);
+        if (this.IsWhite)
+            return hasChessman && initial.Y + 1 == final.Y && (initial.X == final.X - 1 || initial.X == final.X + 1);
+        else
+            return hasChessman && initial.Y - 1 == final.Y && (initial.X == final.X - 1 || initial.X == final.X + 1);
     }
 
     private void BecomeAnotherChessman(Point position) // TODO : Это точно должно быть тут, а то вдруг потом возникнут какие-то проблемы
         // ход незасчитает, а я уже фигуру поставил...
     {
-        var wFactory = new WhiteChessmanFactory();
-        var bFactory = new BlackChessmanFactory();
-
+        // думю здесь будем делать через лист фигур
         if (this.IsWhite) ; // то есть мне тут обновить и доску и лист фигур?
             
     }
     public bool VerifyMove(Point initial, Point final)
     {
         bool valid;
-        if (!this.IsWhite) // HACK : !!!ИЗ-ЗА ТОГО ЧТО НА ДОСКЕ ПРИ ОТРИСОВКЕ ФИГУРЫ ОТОБРАЖАБТСЯ НАОБОРОТ МЫ МЕНЯЕМ УСЛОВИЕ!!!
+        if (this.IsWhite) // HACK: в зависимости от того белая пешка или черная мы задаем ей направление
             valid = initial.X == final.X && initial.Y + 1 == final.Y || Cut(initial, final) ||
             MoveLogic.CheckVerticalMove(initial, final) && final.Y == initial.Y + 2 && !HasMove;
         else

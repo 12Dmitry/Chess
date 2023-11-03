@@ -22,7 +22,6 @@ while (true) // TODO : переделать?
     if (Move.IsCheckmate)
         break;
     Move.VerifyMove();
-
 }
 
 Console.WriteLine("Checkmate!");
