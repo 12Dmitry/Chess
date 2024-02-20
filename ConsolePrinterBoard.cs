@@ -18,7 +18,7 @@ public class ConsolePrinterBoard
         string whiteLine = "|" + "\t" + "|" + blackSpace + "|" + "\t" + "|" + blackSpace + "|" + "\t" + "|" + blackSpace + "|" + "\t" + "|" + blackSpace + "|";
         string seporatorLine = "|" + sepporator + "|" + sepporator + "|" + sepporator + "|" + sepporator + "|" + sepporator + "|" + sepporator + "|" + sepporator + "|" + sepporator + "| ";
         string blackSquare = " ###";
-        string blackChessman = "'";
+        Func<char, char> blackChessman = Char.ToLower;
         // QUIZ : мне нужно чтобы я мог конвертировать эти символы во что захочу, не только char
         var board = new StringBuilder();
         board.AppendLine("\n" + seporatorLine);
@@ -30,14 +30,14 @@ public class ConsolePrinterBoard
                 if (!Board.board[j, i].IsWhite) 
                 {
                     if (Board.board[j, i].Chessman.Name != ChessmanName.Nun && !Board.board[j, i].Chessman.IsWhite)
-                        board.Append((char)(Board.board[j, i].Chessman.Name) + blackChessman + blackSquare + "\t");
+                        board.Append(blackChessman((char)(Board.board[j, i].Chessman.Name)) + blackSquare + "\t");
                     else
                         board.Append((char)(Board.board[j, i].Chessman.Name) + blackSquare + "\t");
                 }
                 else // иначе добавляем без знака
                 {
                     if (Board.board[j, i].Chessman.Name != ChessmanName.Nun && !Board.board[j, i].Chessman.IsWhite)
-                        board.Append((char)(Board.board[j, i].Chessman.Name) + blackChessman + "\t");
+                        board.Append(blackChessman((char)(Board.board[j, i].Chessman.Name)) + "\t");
                     else
                         board.Append((char)(Board.board[j, i].Chessman.Name) + "\t");
                 }

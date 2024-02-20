@@ -4,9 +4,9 @@ namespace Chess;
 
 public class Board
 {
-    public const int Size = 8;
+    public const int Size = 8; // TODO: мб вынести это в namespace
 
-    public static Square[,] board = new Square[Size, Size]; // TODO : вроде как использовать статическое полу не самая хорошая идея 
+    public static Square[,] board = new Square[Size, Size]; // TODO : вроде как использовать статическое поля не самая хорошая идея 
 
     public static void MakeBoard()
     {
@@ -15,7 +15,7 @@ public class Board
                 board[y, x] = new Square(new Nun(new Point(x + 1, y + 1)), Convert.ToBoolean((y + x) % 2));
     }
 
-    public static IChessman DeterminateChessman(Point position) // TODO :помоему это не тут должно быть
+    public static IChessman DeterminateChessman(Point position) // TODO :помоему это не тут должно быть, хз
     {
         return board[position.X - 1, position.Y - 1].Chessman;
     }
