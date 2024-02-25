@@ -18,6 +18,6 @@ public class BlackPlayer : Player
         if (index >= 0)
             PlayerChessmans[index] = bFactory.CreateChessman(name, position);
         else // ?
-            throw new ArgumentException($"The chessman {chessman} is not found in the list");
+            throw new ArgumentException($"The {chessman} is not found in the list");
     }
 }

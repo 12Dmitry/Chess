@@ -3,7 +3,7 @@
 public interface IChessman
 {
     public ChessmanName Name { get; set; }
-    public bool IsWhite { get; set; }
+    public bool IsWhite { get; }
     public Point Position { get; set; }
 
     //public Imagine imagine { get; set; }

@@ -15,17 +15,23 @@ public class Board
                 board[y, x] = new Square(new Nun(new Point(x + 1, y + 1)), Convert.ToBoolean((y + x) % 2));
     }
 
-    public static IChessman DeterminateChessman(Point position) // TODO :помоему это не тут должно быть, хз
+    public static IChessman DeterminateChessman(Point position) // TODO :помоему это не тут должно быть, хз мб выделить зависимый класс в котором логика
     {
         return board[position.X - 1, position.Y - 1].Chessman;
     }
 
-    public static void AddMoveToBoard(Point initial, Point final) // TODO : мб назвать SetChessmanAt
+    public static void MoveChessman(Point initial, Point final)
     {
         board[final.X - 1, final.Y - 1].Chessman = board[initial.X - 1, initial.Y - 1].Chessman;
-        board[initial.X - 1, initial.Y - 1].Chessman = new Nun(initial);
+        board[final.X - 1, final.Y - 1].Chessman.Position = final;
+        RemoveChessman(initial);
 
         ConsolePrinterBoard.Print();
+    }
+
+    public static void RemoveChessman(Point position)
+    {
+        board[position.X - 1, position.Y - 1].Chessman = new Nun(position);
     }
 
     public static void AddChessmansToBoard(List<IChessman> chessmans) 

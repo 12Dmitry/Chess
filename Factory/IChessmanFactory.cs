@@ -1,9 +1,8 @@
 ﻿using Chess.Factory.Factory.Chessmans;
 
-namespace Chess.Factory
+namespace Chess.Factory;
+
+public interface IChessmanFactory
 {
-    public interface IChessmanFactory
-    {
-        IChessman CreateChessman(ChessmanName name, Point position);
-    }
+    IChessman CreateChessman(ChessmanName name, Point position);
 }

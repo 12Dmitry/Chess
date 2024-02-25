@@ -3,7 +3,6 @@ using Chess.Factory.Factory.Chessmans;
 
 namespace Chess.Player;
 
-// Абстрактный класс Player
 public abstract class Player
 {
     public string Name { get; private set; }
@@ -12,7 +11,7 @@ public abstract class Player
     {
         Name = name;
     }
-    public List<IChessman> PlayerChessmans { get; protected set; } = new List<IChessman>(); // TODO : МБ проблемы со статикой/ нестатикой..
+    public List<IChessman> PlayerChessmans { get; protected set; } = new List<IChessman>(); 
 
     public void AddChessman(IChessman chessman)
     {
@@ -25,7 +24,7 @@ public abstract class Player
         if (index >= 0)
             return PlayerChessmans[index];
         else // ??
-            return new Nun(new Point(0, 0));
+            return new Nun(new Point(0, 0)); // TODO: такооое, как по мне, хзхзхзхз....
     }
 
     public void RemoveChessman(IChessman chessman)
@@ -36,8 +35,5 @@ public abstract class Player
             throw new ArgumentException($"The chessman {chessman} is not found in the list");
     }
 
-    public abstract void ReplaceChessman(IChessman chessman, ChessmanName name, Point position);
+    public abstract void ReplaceChessman(IChessman chessman, ChessmanName name, Point position); // TODO: вроде как это ваабще не нужно, за этоо будет доска отвечать.
 }
-
-
-

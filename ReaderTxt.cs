@@ -5,11 +5,11 @@ namespace Chess;
 
 public class ReaderTxt
 {
-    // длина строки в файле должна быть 17,т.к. чтобы понять какого цвета фигура НЕТ черные - строчные, белые - заглавные. Доска всегда повернута за белых.
+    // Доска всегда повернута за ?.
     private static string _path = Path.Combine(Environment.CurrentDirectory, "ChessBoard.txt"); //HACK : мне обязательно нужно чтобы здесь лежал путь до ChessBoard.txt! QUIZ :как мне ужнать путь до жтого места
-    private static readonly string[] lines = File.ReadAllLines(_path);   //@"C:\\Users\\Dmitry\\Source\\Repos\\12Dmitry\\Chess\\ChessBoard.txt"
+    private static readonly string[] lines = File.ReadAllLines(_path);   //@"C:\\Users\\Dmitry\\Source\\Repos\\12Dmitry\\Chess\\ChessBoard.txt" || C:\Users\Dmitry\source\repos\12Dmitry\Chess\bin\Debug\net6.0
 
-    public ChessmanName ConvertCharToChessmanName(char ch) // TODO : помоему это не здесь должно быть или норм, оставить и сделатьь статическим как ваабще определять это?
+    public static ChessmanName ConvertCharToChessmanName(char ch) // TODO: перенести! Это надо еще для пешки
     {
         string name = Enum.GetName(typeof(ChessmanName), (int)Char.ToUpper(ch))!;
         if (name != null)
@@ -23,16 +23,17 @@ public class ReaderTxt
 
         var wFactory = new WhiteChessmanFactory();
         var bFactory = new BlackChessmanFactory();
-        var reader = new ReaderTxt();
         for (int i = 0; i < lines.Length; i++)
         {
             int x = 1; // QUIZ : на сколько это норм, что переменная объявляется в цикле? Думаю норм
             for (int j = 0; j < lines[i].Length; j ++)
             {
-                if (ChekIsWhite(lines[i][j]))
-                    white.AddChessman(wFactory.CreateChessman(reader.ConvertCharToChessmanName(lines[i][j]), new Point(x, i + 1)));
+                if (lines[i][j] == ' ')
+                    continue;
+                else if (ChekIsWhite(lines[i][j]))
+                    white.AddChessman(wFactory.CreateChessman(ConvertCharToChessmanName(lines[i][j]), new Point(x, i + 1)));
                 else
-                    black.AddChessman(bFactory.CreateChessman(reader.ConvertCharToChessmanName(lines[i][j]), new Point(x, i + 1)));
+                    black.AddChessman(bFactory.CreateChessman(ConvertCharToChessmanName(lines[i][j]), new Point(x, i + 1)));
                 x++;
             }
         }
@@ -54,7 +55,7 @@ public class ReaderTxt
         if (Char.IsLower(ch))
             return false;
         else
-            throw new ArgumentException("The argument may be only UPPERCASE - is white or lowercase - is black."); // QUIZ : как лучше писать на английском или на русском? In english
+            throw new ArgumentException("The argument may be only UPPERCASE - is white or lowercase - is black. And whitespase if squere has't chessman"); // QUIZ : как лучше писать на английском или на русском? In english
     }
 
 }

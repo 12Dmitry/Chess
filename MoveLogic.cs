@@ -27,7 +27,6 @@ public class MoveLogic
             MessagesForPlayer.Error("Impossible cut");
             return false;
         }
-        chessman.Position = final; // TODO : УБРАТЬ В ДРУГОЕ МЕСТО и еще есть сомнения в том что она будет везде обновляться..
         return true;
     }
 

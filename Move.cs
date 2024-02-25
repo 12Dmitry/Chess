@@ -19,10 +19,8 @@ public class Move // TODO : мб VerifyMove в Player, а класс переи�
         Point final = MessagesForPlayer.GetCoordinates("Second coordinates: ");
         if (MoveLogic.VerifyMoveLogic(initial, final))
         {
-            if (!HasCheck(new Point(1,1)))
-                Board.AddMoveToBoard(initial, final);
-            else
-                MessagesForPlayer.Error("Check!");
+            if (!HasCheck(new Point(1,1))) Board.MoveChessman(initial, final);
+            else MessagesForPlayer.Error("Check!");
         }
     }    
 

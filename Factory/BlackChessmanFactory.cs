@@ -1,9 +1,5 @@
-﻿using Chess.Factory.Factory.Chessmans;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Chess.Factory.Chessmans.Pawn;
+using Chess.Factory.Factory.Chessmans;
 
 namespace Chess.Factory
 {
@@ -18,7 +14,7 @@ namespace Chess.Factory
             if (name == ChessmanName.King)
                 return new King(name, false, position);
             if (name == ChessmanName.Pawn)
-                return new Pawn(name, false, position);
+                return new BlackPawn(name, position);
             if (name == ChessmanName.Queen)
                 return new Queen(name, false, position);
             if (name == ChessmanName.Rook)
