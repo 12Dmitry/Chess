@@ -1,7 +1,14 @@
 ﻿namespace Chess;
 public class MessagesForPlayer
 {
-    public static Point GetCoordinates(string messages)
+    public static (Point, Point) GetCoordinates()
+    {
+        Point initial = GetCoordinate("First coordinates: ");
+        Point final = GetCoordinate("Second coordinates: ");
+        return (initial, final);
+    }
+
+    public static Point GetCoordinate(string messages)
     {
         Console.WriteLine(messages);
         return Point.ArringeCoordinates(Console.ReadLine()!);
@@ -16,16 +23,15 @@ public class MessagesForPlayer
         Console.WriteLine("                              ");
         Console.WriteLine("                              ");
         Console.SetCursorPosition(0, 32); 
-        Move.VerifyMove();
+        Move.VerifyMove(MessagesForPlayer.GetCoordinates());
     }
 
-    public static char TransformationPawn()
+    public static char GetChessman()
     {
         Console.Write("Choose chessman: ");
-        char chessman = (char)Console.Read();
-        if (chessman == 'Q' || chessman == 'q' || chessman == 'R' || chessman == 'r'
-            || chessman == 'B' || chessman == 'b' || chessman == 'H' || chessman == 'h')
+        char chessman = Char.ToUpper((char)Console.Read());
+        if (chessman == 'Q' || chessman == 'R' || chessman == 'B' || chessman == 'N')
             return chessman;
-        else return TransformationPawn();
+        else return GetChessman();
     }
 }

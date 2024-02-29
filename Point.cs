@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Chess;
 
-public class Point
+public class Point // TODO: Сделать это структурой
 {
     public int X { get; private set; }
     public int Y { get; private set; } 

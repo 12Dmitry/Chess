@@ -1,28 +1,23 @@
 ﻿using Chess.Factory.Factory.Chessmans;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chess;
 
 public class MoveLogic
 {
-    public static bool VerifyMoveLogic(Point initial, Point final)
+    public static bool VerifyMoveLogic((Point initial, Point final)coordinates)
     {
-        IChessman chessman = Board.DeterminateChessman(initial);
+        IChessman chessman = Board.DeterminateChessman(coordinates.initial);
         if (chessman.Name == ChessmanName.Nun)
         {
             MessagesForPlayer.Error("No chessman in this coordinate");
             return false;
         }
-        if (!chessman.VerifyMove(initial, final)) 
+        if (!chessman.VerifyMove(coordinates.initial, coordinates.final)) 
         {
             MessagesForPlayer.Error("Impossible move");
             return false;
         }
-        if (!Cut(chessman, Board.DeterminateChessman(final)))
+        if (!Cut(chessman, Board.DeterminateChessman(coordinates.final)))
         {
             MessagesForPlayer.Error("Impossible cut");
             return false;

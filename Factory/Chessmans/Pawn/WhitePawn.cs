@@ -33,7 +33,7 @@ internal class WhitePawn : Pawn
       // предположим, что у вас есть метод Board.ChooseChessman, который возвращает выбранную фигуру
         var wFactory = new WhiteChessmanFactory();
         Board.RemoveChessman(this.Position);
-        wFactory.CreateChessman(ReaderTxt.ConvertCharToChessmanName(MessagesForPlayer.TransformationPawn()), finalPosition);
+        wFactory.CreateChessman(ReaderTxt.ConvertCharToChessmanName(MessagesForPlayer.GetChessman()), finalPosition);
         //Board.ReplaceChessman(this, newChessman, position);
     }    // ход незасчитает, а я уже фигуру поставил...
 }

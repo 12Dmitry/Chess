@@ -9,7 +9,7 @@ public class ReaderTxt
     private static string _path = Path.Combine(Environment.CurrentDirectory, "ChessBoard.txt"); //HACK : мне обязательно нужно чтобы здесь лежал путь до ChessBoard.txt! QUIZ :как мне ужнать путь до жтого места
     private static readonly string[] lines = File.ReadAllLines(_path);   //@"C:\\Users\\Dmitry\\Source\\Repos\\12Dmitry\\Chess\\ChessBoard.txt" || C:\Users\Dmitry\source\repos\12Dmitry\Chess\bin\Debug\net6.0
 
-    public static ChessmanName ConvertCharToChessmanName(char ch) // TODO: перенести! Это надо еще для пешки
+    public static ChessmanName ConvertCharToChessmanName(char ch) // TODO: перенести сделать класс - хэлпер. Это надо еще для пешки
     {
         string name = Enum.GetName(typeof(ChessmanName), (int)Char.ToUpper(ch))!;
         if (name != null)
@@ -25,7 +25,7 @@ public class ReaderTxt
         var bFactory = new BlackChessmanFactory();
         for (int i = 0; i < lines.Length; i++)
         {
-            int x = 1; // QUIZ : на сколько это норм, что переменная объявляется в цикле? Думаю норм
+            int x = 1; // QUIZ : кринге, хач ес можн по др??
             for (int j = 0; j < lines[i].Length; j ++)
             {
                 if (lines[i][j] == ' ')

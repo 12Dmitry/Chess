@@ -31,6 +31,6 @@ internal class BlackPawn : Pawn
     {
         var bFactory = new BlackChessmanFactory();
         Board.RemoveChessman(this.Position);
-        bFactory.CreateChessman(ReaderTxt.ConvertCharToChessmanName(MessagesForPlayer.TransformationPawn()), finalPosition);
+        bFactory.CreateChessman(ReaderTxt.ConvertCharToChessmanName(MessagesForPlayer.GetChessman()), finalPosition);
     }
 }

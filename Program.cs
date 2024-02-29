@@ -4,26 +4,22 @@ using Chess.Player;
 Board.MakeBoard();
 ConsolePrinterBoard.Print();
 
-var wPlayer = new WhitePlayer("name");
-var bPlayer = new BlackPlayer("bob");
+var wPlayer = new WhitePlayer("Plauer1");
+var bPlayer = new BlackPlayer("Plauer2");
 
 ReaderTxt.Encoding(wPlayer, bPlayer);
 
 Board.AddChessmansToBoard(bPlayer.PlayerChessmans);
 Board.AddChessmansToBoard(wPlayer.PlayerChessmans);
 
-while (true) // TODO : переделать?
+int moveCount;
+for (moveCount = 1; true; moveCount++) // TODO : переделать?
 {
+    Player.CurrentPlayerIsWhite = moveCount % 2 != 0;
     Console.SetCursorPosition(0, 30);
-    Console.WriteLine("Plauer1 move");
-    Move.VerifyMove();
-    if (Move.IsCheckmate)
-        break;
-    Console.SetCursorPosition(0, 30);
-    Console.WriteLine("Plauer2 move");
-    if (Move.IsCheckmate)
-        break;
-    Move.VerifyMove();
+    Console.WriteLine((Player.CurrentPlayerIsWhite)? "White" : "Black" + " player move - " + moveCount);
+    Move.VerifyMove(MessagesForPlayer.GetCoordinates());
+    if (Move.IsCheckmate) break;
 }
 
 Console.WriteLine("Checkmate!");

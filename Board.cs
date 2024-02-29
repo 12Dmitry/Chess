@@ -6,7 +6,7 @@ public class Board
 {
     public const int Size = 8; // TODO: мб вынести это в namespace
 
-    public static Square[,] board = new Square[Size, Size]; // TODO : вроде как использовать статическое поля не самая хорошая идея 
+    public static Square[,] board { get; private set; } = new Square[Size, Size];
 
     public static void MakeBoard()
     {
@@ -20,11 +20,11 @@ public class Board
         return board[position.X - 1, position.Y - 1].Chessman;
     }
 
-    public static void MoveChessman(Point initial, Point final)
+    public static void MoveChessman((Point initial, Point final) coordinates)
     {
-        board[final.X - 1, final.Y - 1].Chessman = board[initial.X - 1, initial.Y - 1].Chessman;
-        board[final.X - 1, final.Y - 1].Chessman.Position = final;
-        RemoveChessman(initial);
+        board[coordinates.final.X - 1, coordinates.final.Y - 1].Chessman = board[coordinates.initial.X - 1, coordinates.initial.Y - 1].Chessman;
+        board[coordinates.final.X - 1, coordinates.final.Y - 1].Chessman.Position = coordinates.final;
+        RemoveChessman(coordinates.initial);
 
         ConsolePrinterBoard.Print();
     }
