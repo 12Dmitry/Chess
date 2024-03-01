@@ -28,7 +28,7 @@ public class Point // TODO: Сделать это структурой
         if (coordinates.Length == 2)
             if (Characters.CharToInt.ContainsKey(coordinates[0]) && int.TryParse(coordinates[1].ToString(), out int y))
                 return new Point(Characters.CharToInt[coordinates[0]], y);
-        MessagesForPlayer.Error("That not convert to int or has the wrong entry");
+        throw new InvalidOperationException("That not convert to int or has the wrong entry");
         return new Point(1, 1);
     }
 }

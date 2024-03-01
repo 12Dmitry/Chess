@@ -9,17 +9,17 @@ public class MoveLogic
         IChessman chessman = Board.DeterminateChessman(coordinates.initial);
         if (chessman.Name == ChessmanName.Nun)
         {
-            MessagesForPlayer.Error("No chessman in this coordinate");
-            return false;
+            throw new InvalidOperationException("No chessman in this coordinate");
+            return false; // TODO: убрать
         }
         if (!chessman.VerifyMove(coordinates.initial, coordinates.final)) 
         {
-            MessagesForPlayer.Error("Impossible move");
+            throw new InvalidOperationException("Impossible move");
             return false;
         }
         if (!Cut(chessman, Board.DeterminateChessman(coordinates.final)))
         {
-            MessagesForPlayer.Error("Impossible cut");
+            throw new InvalidOperationException("Impossible cut");
             return false;
         }
         return true;
