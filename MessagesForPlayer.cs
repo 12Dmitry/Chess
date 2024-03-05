@@ -1,24 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Chess;
+﻿namespace Chess;
 public class MessagesForPlayer
 {
-    public static Point GetCoordinates(string messages)
+    public static (Point, Point) GetCoordinates()
+    {
+        Point initial = GetCoordinate("First coordinates: ");
+        Point final = GetCoordinate("Second coordinates: ");
+        return (initial, final);
+    }
+
+    public static Point GetCoordinate(string messages)
     {
         Console.WriteLine(messages);
         return Point.ArringeCoordinates(Console.ReadLine()!);
     }
 
-    public void Error(string errorDescription)
+    public static void Error(string errorDescription)
     {
-        Console.SetCursorPosition(0, Console.CursorTop - 3);
-        Console.WriteLine(errorDescription + "           ");
+        Console.SetCursorPosition(0, 30);
+        Console.WriteLine(errorDescription + "                              ");
         Console.WriteLine("                              ");
         Console.WriteLine("                              ");
-        Move.VerifyMove();
+        Console.WriteLine("                              ");
+        Console.WriteLine("                              ");
+    }
+
+    public static char GetChessman()
+    {
+        Console.Write("Choose chessman: ");
+        char chessman = Char.ToUpper((char)Console.Read());
+        if (chessman == 'Q' || chessman == 'R' || chessman == 'B' || chessman == 'N')
+            return chessman;
+        else return GetChessman();
     }
 }

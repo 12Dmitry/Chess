@@ -1,45 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Chess.Factory;
+using Chess.Player;
 
-namespace Chess.Chessmans
+namespace Chess;
+
+public class ReaderTxt
 {
-    public class ReaderTxt
+    // Доска всегда повернута за ?.
+    private static string _path = Path.Combine(Environment.CurrentDirectory, "ChessBoard.txt"); //HACK : мне обязательно нужно чтобы здесь лежал путь до ChessBoard.txt! QUIZ :как мне ужнать путь до жтого места
+    private static readonly string[] lines = File.ReadAllLines(_path);   //@"C:\\Users\\Dmitry\\Source\\Repos\\12Dmitry\\Chess\\ChessBoard.txt" || C:\Users\Dmitry\source\repos\12Dmitry\Chess\bin\Debug\net6.0
+
+    public static ChessmanName ConvertCharToChessmanName(char ch) // TODO: перенести сделать класс - хэлпер. Это надо еще для пешки
     {
-        private static string[] lines = File.ReadAllLines("ChessBoard.txt");
+        string name = Enum.GetName(typeof(ChessmanName), (int)Char.ToUpper(ch))!;
+        if (name != null)
+            return (ChessmanName)Enum.Parse(typeof(ChessmanName), name);
+        throw new ArgumentException("ChessmanName dos't exsist - " + "'" + ch + "'.");
+    }
 
-        public Chessman ConvertCharToChessman(char ch)
+    public static void Encoding(WhitePlayer white, BlackPlayer black)
+    {
+        IsRightFormatTxt();
+
+        var wFactory = new WhiteChessmanFactory();
+        var bFactory = new BlackChessmanFactory();
+        for (int i = 0; i < lines.Length; i++)
         {
-            string s = ch.ToString();
-            ChessmanName cn;
-            if (Enum.TryParse<ChessmanName>(s, out cn))
-                return cn;
-            throw new ArgumentException("ChessmanName dos't exsist " + ch);
-        }
-
-        public bool ChekIsWhite(char ch)
-        {
-            if (ch == ' ')
-                return true;
-            if (ch == '.')
-                return false;
-            else
-                throw new ArgumentException("The argument may be only whitespace - is white or point - is black");
-        }
-
-        public static void Encoding()
-        {
-            var Chessmans = new List<Chessman>();
-            var reader = new ReaderTxt();
-            for (int i = 0; i < lines.Length; i++)
-                for (int j = 0; j < lines[i].Length; j += 2)
-                {
-                    Chessman cs = new Chessman(reader.ConvertCharToChessmanName(lines[i][j]), reader.ChekIsWhite(lines[i][j++]), new Point(j, i));
-                    Chessmans.Add(cs);
-                }
-
+            int x = 1; // QUIZ : ??
+            for (int j = 0; j < lines[i].Length; j ++)
+            {
+                if (lines[i][j] == ' ')
+                    continue;
+                else if (ChekIsWhite(lines[i][j]))
+                    white.AddChessman(wFactory.CreateChessman(ConvertCharToChessmanName(lines[i][j]), new Point(x, i + 1)));
+                else
+                    black.AddChessman(bFactory.CreateChessman(ConvertCharToChessmanName(lines[i][j]), new Point(x, i + 1)));
+                x++;
+            }
         }
     }
+
+    private static void IsRightFormatTxt()
+    {
+        if (lines.Length != Board.Size) 
+            throw new ArgumentException("The txt document must have 8 lines!");
+        foreach (string line in lines)
+            if (line.Length != Board.Size)
+                throw new ArgumentException("There should be 8 characters in the txt document line!");
+    }
+    
+    private static bool ChekIsWhite(char ch)
+    {
+        if (Char.IsUpper(ch))
+            return true;
+        if (Char.IsLower(ch))
+            return false;
+        else
+            throw new ArgumentException("The argument may be only UPPERCASE - is white or lowercase - is black. And whitespase if squere has't chessman");
+    }
+
 }

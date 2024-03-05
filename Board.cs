@@ -1,60 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Chess.Chessmans;
+﻿using Chess.Factory.Factory.Chessmans;
 
 namespace Chess;
 
 public class Board
 {
-    public const int Size = 8;
+    public const int Size = 8; 
+    public Square[,] ChessBoard { get; private set; } = new Square[Size, Size];
 
-    public static Square[,] board = new Square[Size, Size];
-
-    public static void MakeBoard()
+    public Board()
     {
-        for (int i = 0; i < Size; i++)
-            for (int j = 0; j < Size; j++)
-                board[i, j] = new Square(new Nun(new Point(i + 1, j + 1)), Convert.ToBoolean((i + j) % 2));
+        for (int y = 0; y < Size; y++)
+            for (int x = 0; x < Size; x++)
+                ChessBoard[y, x] = new Square(new Nun(new Point(x + 1, y + 1)), Convert.ToBoolean((y + x) % 2));
     }
 
-    public static Chessman DeterminateChessman(Point position) // TODO :помоему это не тут должно быть
+    public IChessman DeterminateChessman(Point position) // QUIZ ?
     {
-        return board[position.X - 1, position.Y - 1].Chessman;
+        return ChessBoard[position.X - 1, position.Y - 1].Chessman;
     }
 
-    public static void AddMoveToBoard(Point initial, Point final) 
+    public void MoveChessman((Point initial, Point final) coordinates)
     {
-        board[final.X - 1, final.Y - 1].Chessman = board[initial.X - 1, initial.Y - 1].Chessman;
-        board[initial.X - 1, initial.Y - 1].Chessman = new Nun(initial);
-
-        ConsolePrinterBoard.Print();
+        IChessman initialChessman = ChessBoard[coordinates.initial.X - 1, coordinates.initial.Y - 1].Chessman;
+        ChessBoard[coordinates.final.X - 1, coordinates.final.Y - 1].Chessman = initialChessman;
+        ChessBoard[coordinates.final.X - 1, coordinates.final.Y - 1].Chessman.Position = coordinates.final;
+        RemoveChessman(coordinates.initial);
     }
 
-
-    public static void AddToBoard(Chessman chessman) // TODO : пееределать
+    public void RemoveChessman(Point position)
     {
-        board[chessman.Position.X - 1, chessman.Position.Y - 1].Chessman = chessman;
-
-        ConsolePrinterBoard.Print();
+        ChessBoard[position.X - 1, position.Y - 1].Chessman = new Nun(position);
     }
 
-    public static void AddChessman(Chessman chessman) 
+    public void AddChessmansToBoard(List<IChessman> chessmans) 
     {
+        foreach (var chessman in chessmans)
+            ChessBoard[chessman.Position.X - 1, chessman.Position.Y - 1].Chessman = chessman;
 
-        AddToBoard(chessman);
+        ConsolePrinterBoard.Print(); // HACK: после снова вызываем этот метод, он тут лишний, но при выводе фигур это смотрится прикольно
     }
-
-    private static void SetChessmanAt(Point point, Chessman chessman)
-    {
-
-    }
-
-    //public static Chessman FindOneCopyChessmanToName(ChessmanName name, bool isWhite) //этотработать будет только для фигур в одном экз(но по идее этот метод нужен только для короля) 
-    //{
-    //    return Chessmen.Find(c => c.Name == name && c.IsWhite == isWhite)!;
-    //}
 }

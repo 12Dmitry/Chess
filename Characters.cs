@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Chess;
+﻿namespace Chess;
 
 public class Characters
 {
-    public static Dictionary<char, int> CharToInt = new Dictionary<char, int>()
+    public static Dictionary<char, int> CharToInt { get; private set; } = new()
         { 
             { 'A', 1 },
             { 'B', 2 },
