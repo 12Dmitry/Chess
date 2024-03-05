@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Chess;
+﻿namespace Chess;
 
 public class Point // TODO: Сделать это структурой
 {
@@ -23,12 +17,11 @@ public class Point // TODO: Сделать это структурой
             Y = y;
     }
 
-    public static Point ArringeCoordinates(string coordinates) // TODO наверное есть смысл вынести это в класс Caracters и переименновать его
+    public static Point ArringeCoordinates(string coordinates) 
     {
         if (coordinates.Length == 2)
             if (Characters.CharToInt.ContainsKey(coordinates[0]) && int.TryParse(coordinates[1].ToString(), out int y))
                 return new Point(Characters.CharToInt[coordinates[0]], y);
         throw new InvalidOperationException("That not convert to int or has the wrong entry");
-        return new Point(1, 1);
     }
 }

@@ -14,7 +14,7 @@ public class MessagesForPlayer
         return Point.ArringeCoordinates(Console.ReadLine()!);
     }
 
-    public static void Error(string errorDescription) // TODO^ иожно засунуть Action action вместо метода
+    public static void Error(string errorDescription)
     {
         Console.SetCursorPosition(0, 30);
         Console.WriteLine(errorDescription + "                              ");

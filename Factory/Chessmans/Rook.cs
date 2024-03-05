@@ -13,9 +13,10 @@ public class Rook : IChessman
         Position = position;
         HasMove = false;
     }
-    public bool VerifyMove(Point initial, Point final)
+    public bool VerifyMove((Point initial, Point final) coordinates)
     {
-        bool valid = MoveLogic.CheckVerticalMove(initial, final) || MoveLogic.CheckHorizontalMove(initial, final);
+        Move move = new(coordinates);
+        bool valid = move.CheckVerticalMove() || move.CheckHorizontalMove();
         if (valid)
             HasMove = true;
         return valid;

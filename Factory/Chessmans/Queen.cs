@@ -13,10 +13,9 @@ public class Queen : IChessman
         Position = position;
     }
 
-    public bool VerifyMove(Point initial, Point final)
+    public bool VerifyMove((Point initial, Point final)coordinates)
     {
-        bool valid = MoveLogic.CheckDiagonalMove(initial, final) ||
-            MoveLogic.CheckVerticalMove(initial, final) || MoveLogic.CheckHorizontalMove(initial, final);
-        return valid;
+        Move move = new(coordinates);
+        return move.CheckDiagonalMove() || move.CheckVerticalMove() || move.CheckHorizontalMove();
     }
 }

@@ -13,21 +13,20 @@ public class King : IChessman
         IsWhite = isWhite;
         Position = position;
         HasMove = false;
-        HasCastling = false; // TODO : мб убрать..
+        HasCastling = false; 
     }
 
-    public bool Castling(Point initial, Point final)
+    public bool Castling((Point initial, Point final)coordinates)
     {
-        IChessman chessman = Board.DeterminateChessman(final);
-        return !HasMove && chessman.Name == ChessmanName.Rook && !((Rook)chessman).HasMove; // если будет возникать ошибка приведения, то можно через is\as 
+        IChessman chessman = Game.Board.DeterminateChessman(coordinates.final);
+        return !HasMove && chessman.Name == ChessmanName.Rook && !((Rook)chessman).HasMove; //TODO можно через is\as 
     }
 
-    // public bool DeclareCheck(Point final) {}
-
-    public bool VerifyMove(Point initial, Point final)
+    public bool VerifyMove((Point initial, Point final) coordinates)
     {
-        bool valid = Math.Abs(final.X - initial.X) <= 1 || Math.Abs(final.Y - initial.Y) <= 1
-            || Castling(initial, final);
+        bool valid = Math.Abs(coordinates.final.X - coordinates.initial.X) <= 1
+            || Math.Abs(coordinates.final.Y - coordinates.initial.Y) <= 1
+            || Castling(coordinates);
         if (valid)
             HasMove = true;
         return valid;

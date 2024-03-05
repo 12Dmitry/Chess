@@ -3,37 +3,43 @@
 namespace Chess.Factory.Chessmans.Pawn;
 internal class WhitePawn : Pawn
 {
-    private readonly int _coordinateForTransformation = 8;
+    private const int CoordinateForTransformation = 8; // должно ли это быть в Pawn
     public WhitePawn(ChessmanName name, Point position) : base(name, position)
     {
     }
 
-    public override bool Cut(Point initial, Point final)
+    public override bool Cut((Point initial, Point final) coordinates)
     {
-        IChessman chessmanForCut = Board.DeterminateChessman(final);
+        IChessman chessmanForCut = Game.Board.DeterminateChessman(coordinates.final);
         bool hasChessman = chessmanForCut.Name != ChessmanName.Nun && chessmanForCut.IsWhite == false;
-        return hasChessman && initial.Y + 1 == final.Y && (initial.X == final.X - 1 || initial.X == final.X + 1);
+        return hasChessman && coordinates.initial.Y + 1 == coordinates.final.Y 
+            && (coordinates.initial.X == coordinates.final.X - 1 
+            || coordinates.initial.X == coordinates.final.X + 1);
     }
 
-    public override bool VerifyMove(Point initial, Point final)
+    public override bool VerifyMove((Point initial, Point final)coordinates)
     {
-        bool valid;
-        valid = initial.X == final.X && initial.Y + 1 == final.Y && Board.DeterminateChessman(final).Name == ChessmanName.Nun 
-            || Cut(initial, final) ||
-        MoveLogic.CheckVerticalMove(initial, final) && final.Y == initial.Y + 2 && !HasMove && Board.DeterminateChessman(final).Name == ChessmanName.Nun;
+        var move = new Move(coordinates);
+        bool valid = coordinates.initial.X == coordinates.final.X
+                     && coordinates.initial.Y + 1 == coordinates.final.Y
+                     && Game.Board.DeterminateChessman(coordinates.final).Name == ChessmanName.Nun
+                     || Cut(coordinates)
+                     || move.CheckVerticalMove()
+                     && coordinates.final.Y == coordinates.initial.Y + 2
+                     && !HasMove
+                     && Game.Board.DeterminateChessman(coordinates.final).Name == ChessmanName.Nun;
         if (valid)
             HasMove = true;
-        if (final.Y == _coordinateForTransformation && valid)
-            TransformToAnotherChessman(final);
+        if (coordinates.final.Y == CoordinateForTransformation && valid)
+            TransformToAnotherChessman(coordinates.final);
         return valid;
     }
 
     internal override void TransformToAnotherChessman(Point finalPosition)
-    { // TODO : Это точно должно быть тут, а то вдруг потом возникнут какие-то проблемы
-      // предположим, что у вас есть метод Board.ChooseChessman, который возвращает выбранную фигуру
+    { 
         var wFactory = new WhiteChessmanFactory();
-        Board.RemoveChessman(this.Position);
+        Game.Board.RemoveChessman(this.Position);
         wFactory.CreateChessman(ReaderTxt.ConvertCharToChessmanName(MessagesForPlayer.GetChessman()), finalPosition);
-        //Board.ReplaceChessman(this, newChessman, position);
-    }    // ход незасчитает, а я уже фигуру поставил...
+        //TODO МБ Board.ReplaceChessman(this, newChessman, position);
+    }    
 }

@@ -16,15 +16,8 @@ public abstract class Pawn : IChessman
         HasMove = false;
     }
 
-    public abstract bool Cut(Point initial, Point final); // отдельно нужен чтобы проверить шах
+    public abstract bool Cut((Point initial, Point final) coordinates); // отдельно нужен чтобы проверить шах
 
-    internal abstract void TransformToAnotherChessman(Point finalPosition); // TODO : Это точно должно быть тут, а то вдруг потом возникнут какие-то проблемы
-//// предположим, что у вас есть метод Board.ChooseChessman, который возвращает выбранную фигуру
-//        var wFactory = new WhiteChessmanFactory();
-//        var reader = new ReaderTxt();
-//        Board.RemoveChessman(this.Position);
-//        IChessman newChessman = wFactory.CreateChessman(ReaderTxt.ConvertCharToChessmanName(MessagesForPlayer.TransformationPawn()), finalPosition);
-//        //Board.ReplaceChessman(this, newChessman, position);
-//    }    // ход незасчитает, а я уже фигуру поставил...
-    public abstract bool VerifyMove(Point initial, Point final);
+    internal abstract void TransformToAnotherChessman(Point finalPosition);
+    public abstract bool VerifyMove((Point initial, Point final) coordinates);
 }

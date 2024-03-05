@@ -18,23 +18,4 @@ public abstract class Player
     {
         PlayerChessmans.Add(chessman);
     }
-
-    public IChessman FindChessman(IChessman chessman)
-    {
-        int index = PlayerChessmans.IndexOf(chessman);
-        if (index >= 0)
-            return PlayerChessmans[index];
-        else // ??
-            return new Nun(new Point(0, 0)); // TODO: такооое, как по мне, хзхзхзхз....
-    }
-
-    public void RemoveChessman(IChessman chessman)
-    {
-        if (PlayerChessmans.Contains(chessman))
-            PlayerChessmans.Remove(chessman);
-        else
-            throw new ArgumentException($"The chessman {chessman} is not found in the list");
-    }
-
-    public abstract void ReplaceChessman(IChessman chessman, ChessmanName name, Point position); // TODO: вроде как это ваабще не нужно, за этоо будет доска отвечать.
 }

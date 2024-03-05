@@ -25,7 +25,7 @@ public class ReaderTxt
         var bFactory = new BlackChessmanFactory();
         for (int i = 0; i < lines.Length; i++)
         {
-            int x = 1; // QUIZ : кринге, хач ес можн по др??
+            int x = 1; // QUIZ : ??
             for (int j = 0; j < lines[i].Length; j ++)
             {
                 if (lines[i][j] == ' ')
@@ -41,10 +41,10 @@ public class ReaderTxt
 
     private static void IsRightFormatTxt()
     {
-        if (lines.Length != 8) // HACK: magic number
+        if (lines.Length != Board.Size) 
             throw new ArgumentException("The txt document must have 8 lines!");
         foreach (string line in lines)
-            if (line.Length != 8)// HACK: magic number
+            if (line.Length != Board.Size)
                 throw new ArgumentException("There should be 8 characters in the txt document line!");
     }
     
@@ -55,7 +55,7 @@ public class ReaderTxt
         if (Char.IsLower(ch))
             return false;
         else
-            throw new ArgumentException("The argument may be only UPPERCASE - is white or lowercase - is black. And whitespase if squere has't chessman"); // QUIZ : как лучше писать на английском или на русском? In english
+            throw new ArgumentException("The argument may be only UPPERCASE - is white or lowercase - is black. And whitespase if squere has't chessman");
     }
 
 }

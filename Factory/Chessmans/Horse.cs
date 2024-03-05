@@ -15,10 +15,11 @@ public class Horse : IChessman
         Position = position;
     }
 
-    public bool VerifyMove(Point initial, Point final)
+    public bool VerifyMove((Point initial, Point final) coordinates)
     {
-        bool valid = (Math.Abs(initial.X - final.X) == 1 && Math.Abs(initial.Y - final.Y) == 2)
-        || (Math.Abs(initial.X - final.X) == 2 && Math.Abs(initial.Y - final.Y) == 1);
-        return valid;
+        return (Math.Abs(coordinates.initial.X - coordinates.final.X) == 1
+        && Math.Abs(coordinates.initial.Y - coordinates.final.Y) == 2)
+        || (Math.Abs(coordinates.initial.X - coordinates.final.X) == 2 
+        && Math.Abs(coordinates.initial.Y - coordinates.final.Y) == 1);
     }
 }

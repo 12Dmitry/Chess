@@ -6,13 +6,5 @@ public interface IChessman
     public bool IsWhite { get; }
     public Point Position { get; set; }
 
-    //public Imagine imagine { get; set; }
-
-    bool VerifyMove(Point initial, Point final);
-
-    // Переопределение метода ToString
-    /*public override string ToString()
-    {
-        return $"Chessmen: Name = {Name}, IsWhite = {IsWhite}, Valid = {Valid}";
-    }*/
+    bool VerifyMove((Point initial, Point final) coordinates);
 }

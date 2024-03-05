@@ -12,9 +12,9 @@ public class Bishop : IChessman
         IsWhite = isWhite;
         Position = position;
     }
-    public bool VerifyMove(Point initial, Point final)
+    public bool VerifyMove((Point initial, Point final) coordinates)
     {
-        bool valid = MoveLogic.CheckDiagonalMove(initial, final);
-        return valid;
+        Move move = new(coordinates);
+        return move.CheckDiagonalMove();
     }
 }
