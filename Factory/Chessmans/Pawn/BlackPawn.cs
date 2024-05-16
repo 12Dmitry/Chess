@@ -3,9 +3,11 @@
 namespace Chess.Factory.Chessmans.Pawn;
 internal class BlackPawn : Pawn
 {
-    private const int CoordinateForTransformation = 1; // QUIZ должно ли это быть в Pawn
+    protected sealed override int CoordinateForTransformation { get; set; }
+
     public BlackPawn(ChessmanName name, Point position) : base(name, position)
     {
+        CoordinateForTransformation = 1;
     }
 
     public override bool Cut((Point initial, Point final)coordinates)
@@ -30,12 +32,10 @@ internal class BlackPawn : Pawn
                      && Game.Board.DeterminateChessman(coordinates.final).Name == ChessmanName.Nun;
         if (valid)
             HasMove = true;
-        if (coordinates.final.Y == CoordinateForTransformation && valid)
-            TransformToAnotherChessman(coordinates.final);
         return valid;
     }
 
-    internal override void TransformToAnotherChessman(Point finalPosition)
+    public override void TryTransformToAnotherChessman(Point finalPosition)
     {
         var bFactory = new BlackChessmanFactory();
         Game.Board.RemoveChessman(this.Position);

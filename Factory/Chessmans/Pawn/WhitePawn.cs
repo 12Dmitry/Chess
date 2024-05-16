@@ -3,9 +3,11 @@
 namespace Chess.Factory.Chessmans.Pawn;
 internal class WhitePawn : Pawn
 {
-    private const int CoordinateForTransformation = 8; // должно ли это быть в Pawn
+    protected sealed override int CoordinateForTransformation { get; set; }
+
     public WhitePawn(ChessmanName name, Point position) : base(name, position)
     {
+        CoordinateForTransformation = 8;
     }
 
     public override bool Cut((Point initial, Point final) coordinates)
@@ -30,16 +32,16 @@ internal class WhitePawn : Pawn
                      && Game.Board.DeterminateChessman(coordinates.final).Name == ChessmanName.Nun;
         if (valid)
             HasMove = true;
-        if (coordinates.final.Y == CoordinateForTransformation && valid)
-            TransformToAnotherChessman(coordinates.final);
         return valid;
     }
 
-    internal override void TransformToAnotherChessman(Point finalPosition)
+    public override void TryTransformToAnotherChessman(Point finalPosition)
     { 
+        if (finalPosition.Y != CoordinateForTransformation) return;
+        
         var wFactory = new WhiteChessmanFactory();
         Game.Board.RemoveChessman(this.Position);
         wFactory.CreateChessman(ReaderTxt.ConvertCharToChessmanName(MessagesForPlayer.GetChessman()), finalPosition);
         //TODO МБ Board.ReplaceChessman(this, newChessman, position);
-    }    
+    }
 }

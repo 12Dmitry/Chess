@@ -14,7 +14,7 @@ namespace Chess.Factory
             if (name == ChessmanName.King)
                 return new King(name, false, position);
             if (name == ChessmanName.Pawn)
-                return new BlackPawn(name, position);
+                return new BlackPawn(name, position); // todo somnitelno...
             if (name == ChessmanName.Queen)
                 return new Queen(name, false, position);
             if (name == ChessmanName.Rook)

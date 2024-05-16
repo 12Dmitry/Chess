@@ -30,6 +30,10 @@ public class MessagesForPlayer
         char chessman = Char.ToUpper((char)Console.Read());
         if (chessman == 'Q' || chessman == 'R' || chessman == 'B' || chessman == 'N')
             return chessman;
-        else return GetChessman();
+        else
+        {
+            Console.Write("'\n'Q/R/B/N");
+            return GetChessman();
+        }
     }
 }

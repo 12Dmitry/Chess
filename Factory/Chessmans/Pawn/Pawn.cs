@@ -18,6 +18,9 @@ public abstract class Pawn : IChessman
 
     public abstract bool Cut((Point initial, Point final) coordinates); // отдельно нужен чтобы проверить шах
 
-    internal abstract void TransformToAnotherChessman(Point finalPosition);
     public abstract bool VerifyMove((Point initial, Point final) coordinates);
+
+    public abstract void TryTransformToAnotherChessman(Point finalPosition);
+
+    protected abstract int CoordinateForTransformation { get; set; }
 }

@@ -11,7 +11,7 @@ public class Game
     public static Board Board { get; private set; }
     public static WhitePlayer WhitePlayer { get; private set; }
     public static BlackPlayer BlackPlayer { get; private set; }
-    public static Array[,] MoveHistory { get; private set; }  // TODO доделать MoveHistory
+    public static Stack<(Point initial, Point final, IChessman chessman)> MoveHistory { get; private set; }
 
     public Game()
     {
@@ -26,17 +26,29 @@ public class Game
         CurrentPlayerIsWhite = true;
         IsCheckmate = false;
         IsCheck = false;
-        //MoveHistory = new Array;
+        MoveHistory = new();
     }
 
     public void Start()
     {
+        Console.WriteLine("Checkmate!");
         while (true)
         {
             MoveCount++;
             CurrentPlayerIsWhite = MoveCount % 2 != 0;
+
+// Если текущая ширина окна больше 120, измените её перед установкой размера буфера
+            Console.WindowWidth = 120;
+// Теперь безопасно установить размер буфера
+            Console.WindowHeight = 39;
+            Console.BufferWidth = 120;
+
+// Установка высоты буфера консоли
+            Console.BufferHeight = 500; // например, 500 строк в высоту
+
             Console.SetCursorPosition(0, 29);
             Console.WriteLine(((CurrentPlayerIsWhite) ? "White" : "Black") + " player move - " + MoveCount + '\n'); // Выводим информацию о ходе
+            // _______ todo relocate to conole message or printer!
             try
             {
                 MakeMove(MessagesForPlayer.GetCoordinates());
@@ -56,7 +68,6 @@ public class Game
             }
             ConsolePrinterBoard.Print();
         }
-        Console.WriteLine("Checkmate!");
     }
 
     public void Restart() // Метод для перезапуска игры
@@ -64,7 +75,7 @@ public class Game
         // TODO: реализовать логику перезапуска игры
     }
 
-    public void End()
+    private void FinishGame()
     {
         IsCheckmate = true;
     }
@@ -74,21 +85,24 @@ public class Game
         // TODO: реализовать логику вывода информации об игре
     }
 
-    public void MakeMove((Point initial, Point final) coordinates)
+    private void MakeMove((Point initial, Point final) coordinates)
     {
         Move move = new(coordinates);
         move.VerifyMove();
         move.ExecuteMove();
         IsCheck = CheckForCheck();
-        if (IsCheck)
+        if (!IsCheck) return;
+        ConsolePrinterBoard.Print();
+        move.UndoMove();
+        ConsolePrinterBoard.Print();
+        IsCheckmate = CheckForCheckmate();
+        if (IsCheckmate)
         {
-            IsCheckmate = CheckForCheckmate();
-            if (IsCheckmate) End();
-            else
-            {
-                move.UndoMove();
-                throw new InvalidOperationException("Check!");
-            }
+            FinishGame();
+        }
+        else
+        {
+            throw new InvalidOperationException("Check!");
         }
     }
 
@@ -109,7 +123,7 @@ public class Game
         {
             var chessman = square.Chessman;
             if (chessman.Name != ChessmanName.Nun && chessman.Name != ChessmanName.King &&
-                chessman.IsWhite != CurrentPlayerIsWhite && chessman.VerifyMove((chessman.Position, kingPosition)))
+                chessman.IsWhite != CurrentPlayerIsWhite && chessman.VerifyMove((chessman.Position, kingPosition))) // todo PAWN VERIFY is BROKE
                 return true;
         }
         if (kingPosition == null) throw new ArgumentException("Hasn't King!?");
@@ -129,13 +143,17 @@ public class Game
                     try
                     {
                         move.VerifyMove();
-                        move.ExecuteMove();
+                        move.ExecuteMove(false);
                         if (!CheckForCheck())
                         {
+                            ConsolePrinterBoard.Print();
                             move.UndoMove();
+                            ConsolePrinterBoard.Print();
                             return false;
                         }
+                        ConsolePrinterBoard.Print();
                         move.UndoMove();
+                        ConsolePrinterBoard.Print();
                     }
                     catch (InvalidOperationException)
                     {

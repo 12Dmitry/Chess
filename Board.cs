@@ -1,4 +1,5 @@
-﻿using Chess.Factory.Factory.Chessmans;
+﻿using Chess.Factory.Chessmans.Pawn;
+using Chess.Factory.Factory.Chessmans;
 
 namespace Chess;
 
@@ -19,9 +20,10 @@ public class Board
         return ChessBoard[position.X - 1, position.Y - 1].Chessman;
     }
 
-    public void MoveChessman((Point initial, Point final) coordinates)
+    public void MoveChessman((Point initial, Point final) coordinates, bool promotePawn = true)
     {
         IChessman initialChessman = ChessBoard[coordinates.initial.X - 1, coordinates.initial.Y - 1].Chessman;
+        if (initialChessman is Pawn pawn && promotePawn) pawn.TryTransformToAnotherChessman(coordinates.final);
         ChessBoard[coordinates.final.X - 1, coordinates.final.Y - 1].Chessman = initialChessman;
         ChessBoard[coordinates.final.X - 1, coordinates.final.Y - 1].Chessman.Position = coordinates.final;
         RemoveChessman(coordinates.initial);
@@ -31,8 +33,17 @@ public class Board
     {
         ChessBoard[position.X - 1, position.Y - 1].Chessman = new Nun(position);
     }
+    
+    public void MoveBackChessman((Point initial, Point final) coordinates, IChessman chessman)
+    {
+        IChessman initialChessman = ChessBoard[coordinates.initial.X - 1, coordinates.initial.Y - 1].Chessman;
+        // if (initialChessman is Pawn pawn) pawn.TryTransformToAnotherChessman(coordinates.final);
+        ChessBoard[coordinates.final.X - 1, coordinates.final.Y - 1].Chessman = initialChessman;
+        ChessBoard[coordinates.final.X - 1, coordinates.final.Y - 1].Chessman.Position = coordinates.final;
+        ChessBoard[coordinates.initial.X - 1, coordinates.initial.Y - 1].Chessman = chessman;
+    }
 
-    public void AddChessmansToBoard(List<IChessman> chessmans) 
+    public void AddChessmansToBoard(List<IChessman> chessmans)
     {
         foreach (var chessman in chessmans)
             ChessBoard[chessman.Position.X - 1, chessman.Position.Y - 1].Chessman = chessman;

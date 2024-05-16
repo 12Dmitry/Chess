@@ -4,29 +4,34 @@ namespace Chess;
 
 public class Move
 {
-    public (Point initial, Point final) Сoordinates { get; private set; }
+    private (Point initial, Point final) Coordinates { get; }
 
     public Move((Point initial, Point final) coordinates)
     {
-        Сoordinates = coordinates;
+        this.Coordinates = coordinates;
     }
 
     public void VerifyMove()
     {
-        IChessman chessman = Game.Board.DeterminateChessman(Сoordinates.initial);
-        if (Game.Board.DeterminateChessman(Сoordinates.initial).IsWhite != Game.CurrentPlayerIsWhite)
+        IChessman chessman = Game.Board.DeterminateChessman(Coordinates.initial);
+        if (Game.Board.DeterminateChessman(Coordinates.initial).IsWhite != Game.CurrentPlayerIsWhite)
             throw new InvalidOperationException("You can't move this chessman");
         if (chessman.Name == ChessmanName.Nun)
             throw new InvalidOperationException("No chessman in this coordinate");
-        if (!chessman.VerifyMove(Сoordinates))
+        if (!chessman.VerifyMove(Coordinates))
             throw new InvalidOperationException("Impossible move");
-        if (!Cut(chessman, Game.Board.DeterminateChessman(Сoordinates.final)))
+        if (!Cut(chessman, Game.Board.DeterminateChessman(Coordinates.final)))
             throw new InvalidOperationException("Impossible cut");
     }
 
-    public void ExecuteMove() => Game.Board.MoveChessman(Сoordinates); // QUIZ ??
+    public void ExecuteMove(bool promotePawn = true)
+    {
+        Game.MoveHistory.Push((Coordinates.initial, Coordinates.final, Game.Board.DeterminateChessman(Coordinates.final)));
+        Game.Board.MoveChessman(Coordinates, promotePawn); // QUIZ ??
+    }
 
-    public void UndoMove() { } // TODO перенести и сделать
+    public void UndoMove() =>
+        Game.Board.MoveBackChessman((Game.MoveHistory.Peek().final, Game.MoveHistory.Peek().initial), Game.MoveHistory.Pop().chessman);
 
     public static bool Cut(IChessman initial, IChessman final)
     {
@@ -37,15 +42,15 @@ public class Move
 
     public bool CheckDiagonalMove()
     {
-        if (Math.Abs(Сoordinates.final.X - Сoordinates.initial.X) == Math.Abs(Сoordinates.final.Y - Сoordinates.initial.Y))
+        if (Math.Abs(Coordinates.final.X - Coordinates.initial.X) == Math.Abs(Coordinates.final.Y - Coordinates.initial.Y))
         {
-            int dx = Сoordinates.final.X > Сoordinates.initial.X ? 1 : -1; // 1 вправо, -1 влево
-            int dy = Сoordinates.final.Y > Сoordinates.initial.Y ? 1 : -1; // 1 вверх, -1 вниз
+            int dx = Coordinates.final.X > Coordinates.initial.X ? 1 : -1; // 1 вправо, -1 влево
+            int dy = Coordinates.final.Y > Coordinates.initial.Y ? 1 : -1; // 1 вверх, -1 вниз
 
-            int x = Сoordinates.initial.X + dx;
-            int y = Сoordinates.initial.Y + dy;
+            int x = Coordinates.initial.X + dx;
+            int y = Coordinates.initial.Y + dy;
 
-            while (x != Сoordinates.final.X && y != Сoordinates.final.Y)
+            while (x != Coordinates.final.X && y != Coordinates.final.Y)
             {
                 if (Game.Board.DeterminateChessman(new Point(x, y)).Name != ChessmanName.Nun)
                     return false;
@@ -59,13 +64,13 @@ public class Move
 
     public bool CheckVerticalMove()
     {
-        if (Сoordinates.initial.X == Сoordinates.final.X && Сoordinates.initial.Y != Сoordinates.final.Y)
+        if (Coordinates.initial.X == Coordinates.final.X && Coordinates.initial.Y != Coordinates.final.Y)
         {
-            int minY = Math.Min(Сoordinates.initial.Y, Сoordinates.final.Y);
-            int maxY = Math.Max(Сoordinates.initial.Y, Сoordinates.final.Y);
+            int minY = Math.Min(Coordinates.initial.Y, Coordinates.final.Y);
+            int maxY = Math.Max(Coordinates.initial.Y, Coordinates.final.Y);
 
             for (int y = minY + 1; y < maxY; y++)
-                if (Game.Board.DeterminateChessman(new Point(Сoordinates.final.X, y)).Name != ChessmanName.Nun)
+                if (Game.Board.DeterminateChessman(new Point(Coordinates.final.X, y)).Name != ChessmanName.Nun)
                     return false;
 
             return true;
@@ -75,13 +80,13 @@ public class Move
 
     public bool CheckHorizontalMove()
     {
-        if (Сoordinates.initial.Y == Сoordinates.final.Y && Сoordinates.initial.X != Сoordinates.final.X)
+        if (Coordinates.initial.Y == Coordinates.final.Y && Coordinates.initial.X != Coordinates.final.X)
         {
-            int minX = Math.Min(Сoordinates.initial.X, Сoordinates.final.X);
-            int maxX = Math.Max(Сoordinates.initial.X, Сoordinates.final.X);
+            int minX = Math.Min(Coordinates.initial.X, Coordinates.final.X);
+            int maxX = Math.Max(Coordinates.initial.X, Coordinates.final.X);
 
             for (int x = minX + 1; x < maxX; x++)
-                if (Game.Board.DeterminateChessman(new Point(x, Сoordinates.final.Y)).Name != ChessmanName.Nun)
+                if (Game.Board.DeterminateChessman(new Point(x, Coordinates.final.Y)).Name != ChessmanName.Nun)
                     return false;
             return true;
         }
