@@ -7,12 +7,12 @@ public class Point // TODO: Сделать это структурой
 
     public Point (int x , int y)
     {
-        if (x < 1 || x > 8)
-            throw new ArgumentException("x must be between 1 and 8");
+        if (x is < 1 or > 8)
+            throw new ArgumentException("x must be between 1 and 8: " + x);
         else
             X = x;
-        if (y < 1 || y > 8)
-            throw new ArgumentException("y must be between 1 and 8");
+        if (y is < 1 or > 8)
+            throw new ArgumentException("y must be between 1 and 8: " + y);
         else
             Y = y;
     }

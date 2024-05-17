@@ -1,4 +1,5 @@
-﻿using Chess.Factory.Factory.Chessmans;
+﻿using System.Net;
+using Chess.Factory.Factory.Chessmans;
 
 namespace Chess;
 
@@ -14,7 +15,7 @@ public class Move
     public void VerifyMove()
     {
         IChessman chessman = Game.Board.DeterminateChessman(Coordinates.initial);
-        if (Game.Board.DeterminateChessman(Coordinates.initial).IsWhite != Game.CurrentPlayerIsWhite)
+        if (chessman.IsWhite != Game.CurrentPlayerIsWhite)
             throw new InvalidOperationException("You can't move this chessman");
         if (chessman.Name == ChessmanName.Nun)
             throw new InvalidOperationException("No chessman in this coordinate");
@@ -35,14 +36,13 @@ public class Move
 
     public static bool Cut(IChessman initial, IChessman final)
     {
-        if (final.Name != ChessmanName.Nun && final.IsWhite != initial.IsWhite || final.Name == ChessmanName.Nun)
-            return true;
-        return false;
+        return final.Name != ChessmanName.Nun && final.IsWhite != initial.IsWhite || final.Name == ChessmanName.Nun;
     }
 
     public bool CheckDiagonalMove()
     {
-        if (Math.Abs(Coordinates.final.X - Coordinates.initial.X) == Math.Abs(Coordinates.final.Y - Coordinates.initial.Y))
+        if (Math.Abs(Coordinates.final.X - Coordinates.initial.X) ==
+            Math.Abs(Coordinates.final.Y - Coordinates.initial.Y))
         {
             int dx = Coordinates.final.X > Coordinates.initial.X ? 1 : -1; // 1 вправо, -1 влево
             int dy = Coordinates.final.Y > Coordinates.initial.Y ? 1 : -1; // 1 вверх, -1 вниз
@@ -52,11 +52,19 @@ public class Move
 
             while (x != Coordinates.final.X && y != Coordinates.final.Y)
             {
-                if (Game.Board.DeterminateChessman(new Point(x, y)).Name != ChessmanName.Nun)
+                try
+                {
+                    if (Game.Board.DeterminateChessman(new Point(x, y)).Name != ChessmanName.Nun)
+                        return false;
+                }
+                catch (ArgumentException)
+                {
                     return false;
+                }
                 x += dx;
                 y += dy;
             }
+
             return true;
         }
         return false;
@@ -70,8 +78,17 @@ public class Move
             int maxY = Math.Max(Coordinates.initial.Y, Coordinates.final.Y);
 
             for (int y = minY + 1; y < maxY; y++)
-                if (Game.Board.DeterminateChessman(new Point(Coordinates.final.X, y)).Name != ChessmanName.Nun)
+            {
+                try
+                {
+                    if (Game.Board.DeterminateChessman(new Point(Coordinates.final.X, y)).Name != ChessmanName.Nun)
+                        return false;
+                }
+                catch (ArgumentException)
+                {
                     return false;
+                }
+            }
 
             return true;
         }
@@ -86,8 +103,17 @@ public class Move
             int maxX = Math.Max(Coordinates.initial.X, Coordinates.final.X);
 
             for (int x = minX + 1; x < maxX; x++)
-                if (Game.Board.DeterminateChessman(new Point(x, Coordinates.final.Y)).Name != ChessmanName.Nun)
+            {
+                try
+                {
+                    if (Game.Board.DeterminateChessman(new Point(x, Coordinates.final.Y)).Name != ChessmanName.Nun)
+                        return false;
+                }
+                catch (ArgumentException)
+                {
                     return false;
+                }
+            }
             return true;
         }
         return false;

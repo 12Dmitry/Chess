@@ -1,6 +1,12 @@
 ﻿namespace Chess;
 public class MessagesForPlayer
 {
+    public static void DisplayMoveInfo(bool currentPlayerIsWhite, int moveCount)
+    {
+        Console.SetCursorPosition(0, 29);
+        Console.WriteLine(((currentPlayerIsWhite) ? "White" : "Black") + " player move - " + moveCount + '\n');
+    }
+    
     public static (Point, Point) GetCoordinates()
     {
         Point initial = GetCoordinate("First coordinates: ");
@@ -8,7 +14,7 @@ public class MessagesForPlayer
         return (initial, final);
     }
 
-    public static Point GetCoordinate(string messages)
+    private static Point GetCoordinate(string messages)
     {
         Console.WriteLine(messages);
         return Point.ArringeCoordinates(Console.ReadLine()!);

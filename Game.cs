@@ -1,4 +1,5 @@
-﻿using Chess.Factory.Factory.Chessmans;
+﻿using System.Diagnostics;
+using Chess.Factory.Factory.Chessmans;
 using Chess.Player;
 
 namespace Chess;
@@ -36,19 +37,8 @@ public class Game
         {
             MoveCount++;
             CurrentPlayerIsWhite = MoveCount % 2 != 0;
-
-// Если текущая ширина окна больше 120, измените её перед установкой размера буфера
-            Console.WindowWidth = 120;
-// Теперь безопасно установить размер буфера
-            Console.WindowHeight = 39;
-            Console.BufferWidth = 120;
-
-// Установка высоты буфера консоли
-            Console.BufferHeight = 500; // например, 500 строк в высоту
-
-            Console.SetCursorPosition(0, 29);
-            Console.WriteLine(((CurrentPlayerIsWhite) ? "White" : "Black") + " player move - " + MoveCount + '\n'); // Выводим информацию о ходе
-            // _______ todo relocate to conole message or printer!
+ 
+            MessagesForPlayer.DisplayMoveInfo(CurrentPlayerIsWhite, MoveCount);
             try
             {
                 MakeMove(MessagesForPlayer.GetCoordinates());
@@ -129,9 +119,11 @@ public class Game
         if (kingPosition == null) throw new ArgumentException("Hasn't King!?");
         return false;
     }
-
-    private bool CheckForCheckmate()
+    
+    private bool OldCheckForCheckmate()
     {
+        Stopwatch ts = new();
+        ts.Start();
         foreach (var square in Board.ChessBoard) // Перебрать все возможные ходы текущего игрока
         {
             var chessman = square.Chessman;
@@ -142,26 +134,76 @@ public class Game
                     Move move = new((chessman.Position, target.Chessman.Position));
                     try
                     {
+                        Console.WriteLine("_" + ts.Elapsed);
                         move.VerifyMove();
+                        Console.WriteLine("VerifyMove " + ts.Elapsed);
                         move.ExecuteMove(false);
+                        Console.WriteLine("ExecuteMove " + ts.Elapsed);
                         if (!CheckForCheck())
                         {
-                            ConsolePrinterBoard.Print();
+                            // ConsolePrinterBoard.Print();
                             move.UndoMove();
-                            ConsolePrinterBoard.Print();
+                            ts.Stop();
+                            Console.WriteLine("__LAST CheckForCheck " + ts.Elapsed);
+                            // ConsolePrinterBoard.Print();
                             return false;
                         }
-                        ConsolePrinterBoard.Print();
+                        // ConsolePrinterBoard.Print();
                         move.UndoMove();
-                        ConsolePrinterBoard.Print();
+                        Console.WriteLine("CheckForCheck " + ts.Elapsed);
+                        // ConsolePrinterBoard.Print();
                     }
                     catch (InvalidOperationException)
                     {
                         continue;
                     }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        throw;
+                    }
                 }
             }
         }
+        ts.Stop();
         return true; // Мат
+    }
+
+    private bool CheckForCheckmate()
+    {
+        // Оптимизация: Предварительно получить список всех возможных ходов для текущего игрока // прошлая версия которая просто считала все ходи работала 7 сек.
+        var possibleMoves = GetAllPossibleMoves(CurrentPlayerIsWhite);
+        foreach (var move in possibleMoves)
+        {
+            try
+            {
+                move.ExecuteMove(false);
+                if (!CheckForCheck())
+                {
+                    move.UndoMove();
+                    return false;
+                }
+
+                move.UndoMove();
+            }
+            catch (InvalidOperationException)
+            {
+                continue;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        return true; // Мат
+    }
+
+// Дополнительный метод для получения всех возможных ходов
+    private List<Move> GetAllPossibleMoves(bool isWhite)
+    {
+        var moves = new List<Move>();
+        // Заполните список 'moves' всеми допустимыми ходами для 'isWhite'
+        return moves;
     }
 }

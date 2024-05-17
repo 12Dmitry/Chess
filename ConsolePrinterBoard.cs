@@ -8,15 +8,20 @@ public class ConsolePrinterBoard
     {
         Console.Clear(); // QUIZ: переместить это в отдельный метод?
                
-        string sepporator = "-------";
-        string blackSpace = "#######";
-        string blackLine = "|" + blackSpace + "|" + "\t" + "|" + blackSpace + "|" + "\t" + "|" + blackSpace + "|" + "\t" + "|" + blackSpace + "|" + "\t" + "|";
-        string whiteLine = "|" + "\t" + "|" + blackSpace + "|" + "\t" + "|" + blackSpace + "|" + "\t" + "|" + blackSpace + "|" + "\t" + "|" + blackSpace + "|";
-        string seporatorLine = "|" + sepporator + "|" + sepporator + "|" + sepporator + "|" + sepporator + "|" + sepporator + "|" + sepporator + "|" + sepporator + "|" + sepporator + "| ";
-        string blackSquare = " ###";
+        Console.WindowWidth = 120;
+        Console.WindowHeight = 39;
+        Console.BufferWidth = 120;
+        Console.BufferHeight = 220; // Установка высоты буфера консоли
+        
+        const string separator = "-------";
+        const string blackSpace = "#######";
+        const string blackLine = "|" + blackSpace + "|" + "\t" + "|" + blackSpace + "|" + "\t" + "|" + blackSpace + "|" + "\t" + "|" + blackSpace + "|" + "\t" + "|";
+        const string whiteLine = "|" + "\t" + "|" + blackSpace + "|" + "\t" + "|" + blackSpace + "|" + "\t" + "|" + blackSpace + "|" + "\t" + "|" + blackSpace + "|";
+        const string separatorLine = "|" + separator + "|" + separator + "|" + separator + "|" + separator + "|" + separator + "|" + separator + "|" + separator + "|" + separator + "| ";
+        const string blackSquare = " ###";
         Func<char, char> blackChessman = Char.ToLower;
         var board = new StringBuilder();
-        board.AppendLine("\n" + seporatorLine);
+        board.AppendLine("\n" + separatorLine);
         for (int i = Board.Size -1; i >= 0; i--) // HACK !доска должна быть перевернута, иначе будут перевернуты координаты! + условие для чкрных фигур контринтуитивно!!
         {
             for (int j = 0; j < Board.Size; j++)
@@ -41,7 +46,7 @@ public class ConsolePrinterBoard
             board.Append('\n');
             string line = (i % 2 == 0) ? blackLine : whiteLine;
             board.AppendLine(line);
-            board.AppendLine(seporatorLine + (1 + i));
+            board.AppendLine(separatorLine + (1 + i));
         }
 
         board.Append('A' + "\t" + 'B' + "\t" + 'C' + "\t" + 'D' + "\t" + 'E' + "\t" + 'F' + "\t" + 'G' + "\t" + 'H');
