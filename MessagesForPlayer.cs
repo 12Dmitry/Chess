@@ -1,5 +1,5 @@
 ﻿namespace Chess;
-public class MessagesForPlayer
+public static class MessagesForPlayer
 {
     public static void DisplayMoveInfo(bool currentPlayerIsWhite, int moveCount)
     {
@@ -18,6 +18,15 @@ public class MessagesForPlayer
     {
         Console.WriteLine(messages);
         return Point.ArringeCoordinates(Console.ReadLine()!);
+    }
+
+    public static bool Restart()
+    {
+        Console.WriteLine("Do you want restart game?: [Y] yes [N] no");
+        var answer = Console.ReadLine();
+        if (string.IsNullOrEmpty(answer)) return Restart();
+        return (answer[0] == 'y' || answer[0] == 'Y') ? true :
+            (answer[0] == 'n' || answer[0] == 'N') ? false : Restart();
     }
 
     public static void Error(string errorDescription)

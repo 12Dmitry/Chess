@@ -5,14 +5,14 @@ using Chess.Player;
 namespace Chess;
 public class Game
 {
-    public static bool IsCheckmate { get; private set; }
-    public static bool IsCheck { get; private set; }
-    public static int MoveCount { get; private set; }
     public static bool CurrentPlayerIsWhite { get; private set; }
     public static Board Board { get; private set; }
     public static WhitePlayer WhitePlayer { get; private set; }
     public static BlackPlayer BlackPlayer { get; private set; }
     public static Stack<(Point initial, Point final, IChessman chessman)> MoveHistory { get; private set; }
+    private static bool IsCheckmate { get; set; }
+    private static bool IsCheck { get; set; }
+    private static int MoveCount { get; set; }
 
     public Game()
     {
@@ -32,7 +32,6 @@ public class Game
 
     public void Start()
     {
-        Console.WriteLine("Checkmate!");
         while (true)
         {
             MoveCount++;
@@ -58,11 +57,16 @@ public class Game
             }
             ConsolePrinterBoard.Print();
         }
+
+        Console.WriteLine("Checkmate!");
+        Restart();
     }
 
     public void Restart() // Метод для перезапуска игры
     {
-        // TODO: реализовать логику перезапуска игры
+        if(!MessagesForPlayer.Restart()) return;
+        var game = new Game();
+        game.Start(); // todo: somnitelnoo
     }
 
     private void FinishGame()
@@ -85,7 +89,7 @@ public class Game
         ConsolePrinterBoard.Print();
         move.UndoMove();
         ConsolePrinterBoard.Print();
-        IsCheckmate = CheckForCheckmate();
+        IsCheckmate = OldCheckForCheckmate();
         if (IsCheckmate)
         {
             FinishGame();
@@ -122,6 +126,7 @@ public class Game
     
     private bool OldCheckForCheckmate()
     {
+        // Console.SetCursorPosition(0, 49);
         Stopwatch ts = new();
         ts.Start();
         foreach (var square in Board.ChessBoard) // Перебрать все возможные ходы текущего игрока
@@ -134,11 +139,11 @@ public class Game
                     Move move = new((chessman.Position, target.Chessman.Position));
                     try
                     {
-                        Console.WriteLine("_" + ts.Elapsed);
-                        move.VerifyMove();
-                        Console.WriteLine("VerifyMove " + ts.Elapsed);
-                        move.ExecuteMove(false);
-                        Console.WriteLine("ExecuteMove " + ts.Elapsed);
+                        // Console.WriteLine("_" + ts.Elapsed);
+                        // move.VerifyMove();
+                        // Console.WriteLine("VerifyMove " + ts.Elapsed);
+                        // move.ExecuteMove(false);
+                        // Console.WriteLine("ExecuteMove " + ts.Elapsed);
                         if (!CheckForCheck())
                         {
                             // ConsolePrinterBoard.Print();
@@ -150,7 +155,7 @@ public class Game
                         }
                         // ConsolePrinterBoard.Print();
                         move.UndoMove();
-                        Console.WriteLine("CheckForCheck " + ts.Elapsed);
+                        // Console.WriteLine("CheckForCheck " + ts.Elapsed);
                         // ConsolePrinterBoard.Print();
                     }
                     catch (InvalidOperationException)
@@ -166,6 +171,7 @@ public class Game
             }
         }
         ts.Stop();
+        Console.WriteLine("__LAST CheckForCheck " + ts.Elapsed);
         return true; // Мат
     }
 
